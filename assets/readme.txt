@@ -1,0 +1,1 @@
+For storing all game assets like images, sound files, etc.
