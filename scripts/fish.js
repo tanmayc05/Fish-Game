@@ -1,3 +1,6 @@
+import * as Matter from '../matter-js-0.19.0/build/matter.min.js';
+
+const {World} = Matter;
 class Fish {
     #name;
     #imagePath;

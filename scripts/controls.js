@@ -1,5 +1,7 @@
-import { Fish } from './fish.js';
+import * as Matter from '../matter-js-0.19.0/build/matter.min.js';
+import './fish.js';
 import {engine} from './main.js';
+
 
 let followFish = null; // if following mouse (yes/no)
 let fishInWorld = false;
