@@ -1,13 +1,12 @@
-import { Engine, Render, World, Bodies} from 'matter-js';
-import { Fish } from './fish.js';
-import './controls.js';
-import './physics.js';
+import * as Matter from '../matter-js-0.19.0/build/matter.min.js';
+import { createUnderwaterEngine } from './physics.js';
 import { initializeFollowingFish } from './controls.js';
+
+const { Engine, Render } = Matter;
 
 // create your engine
 const engine = createUnderwaterEngine();
 
-//const engine = Engine.create();
 const render = Render.create({
     element: document.body,
     engine: engine,
