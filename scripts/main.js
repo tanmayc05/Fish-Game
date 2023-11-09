@@ -1,8 +1,26 @@
-import { Engine, Render, Runner, World, Bodies, Body, Events } from 'matter-js';
+import { Engine, Render, World, Bodies} from 'matter-js';
 import { Fish } from './fish.js';
+import './controls.js';
+import './physics.js';
+import { initializeFollowingFish } from './controls.js';
 
-let Fish = new Fish('fish', 'images/fish.png', 20, engine, {x: 380, y: 100}, {density: 0.001, frictionAir: 0.01, restitution: 0.5, friction: 0.1, originalSize: 250});
-Fish.addToWorld(engine.world);
+// create your engine
+const engine = createUnderwaterEngine();
+
+//const engine = Engine.create();
+const render = Render.create({
+    element: document.body,
+    engine: engine,
+    options: {
+        width: 800,
+        height: 600,
+        wireframes: false
+    }
+});
 
 Engine.run(engine);
 Render.run(render);
+
+initializeFollowingFish();
+
+export {engine};
