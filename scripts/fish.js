@@ -13,7 +13,7 @@ class Fish {
         this.#position = position;
         this.#options = options;
         this.#engine = engine;
-        this.#body = Matter.Bodies.circle(380, 100, this.radius, {
+        this.#body = Matter.Bodies.circle(380, 100, this.#radius, {
             // set the fish's attributes
             density: options.density || 0.001, // mass by unit area
             frictionAir: options.frictionAir || 0.01, // resistance to movement
@@ -32,7 +32,7 @@ class Fish {
             }
         });
         // add the fish to the world
-        Matter.World.add(engine.world, this.#body);
+        World.add(engine.world, this.#body);
     }
     getName() {
         return this.#name;
@@ -40,7 +40,7 @@ class Fish {
     getPosition(){
         return this.#position;
     }
-    // access the MAtter.js body object directly
+    // access the Matter.js body object directly
     getBody(){
         return this.#body;
     }
