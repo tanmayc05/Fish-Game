@@ -1,6 +1,10 @@
-import * as Matter from '../matter-js-0.19.0/build/matter.min.js';
 
-const { Engine, Body, Composite, Events, Vector } = Matter;
+var Engine = Matter.Engine,
+    Body = Matter.Body,
+    Composite = Matter.Composite,
+    Events = Matter.Events,
+    Vector = Matter.Vector;
+
 export function setUpPhysics(engine) {
     engine.world.gravity.y = 0.5;
 

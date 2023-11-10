@@ -1,7 +1,6 @@
-import * as Matter from '../matter-js-0.19.0/build/matter.min.js';
+var World = Matter.World;
 
-const {World} = Matter;
-class Fish {
+export class Fish {
     #name;
     #imagePath;
     #radius;
