@@ -1,5 +1,4 @@
-import * as Matter from '../matter-js-0.19.0/build/matter.min.js';
-import './fish.js';
+import {Fish} from './fish.js';
 import {engine} from './main.js';
 
 
@@ -8,7 +7,7 @@ let fishInWorld = false;
 
 // create first fish
 export function initializeFollowingFish() {
-    followFish = new Fish('fish', 'images/fish.png', 20, engine, {x: 380, y: 100}, {density: 0.001, frictionAir: 0.01, restitution: 0.5, friction: 0.1, originalSize: 250});
+    followFish = new Fish('fish', 'assets/circle.png', 20, engine, {x: 380, y: 100}, {density: 0.001, frictionAir: 0.01, restitution: 0.5, friction: 0.1, originalSize: 250});
 }
 
 // update fish position to follow mouse

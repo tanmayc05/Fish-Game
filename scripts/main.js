@@ -1,8 +1,8 @@
-import * as Matter from '../matter-js-0.19.0/build/matter.min.js';
 import { createUnderwaterEngine } from './physics.js';
 import { initializeFollowingFish } from './controls.js';
 
-const { Engine, Render } = Matter;
+var Engine = Matter.Engine,
+    Render = Matter.Render;
 
 // create your engine
 const engine = createUnderwaterEngine();
