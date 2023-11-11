@@ -1,25 +1,27 @@
-import {Fish} from './fish.js';
-import {engine} from './main.js';
+import * as fish from './fish.js';
+import { createUnderwaterEngine } from './physics.js';
 
+var World = Matter.World;
 
 let followFish = null; // if following mouse (yes/no)
 let fishInWorld = false;
 
 // create first fish
 export function initializeFollowingFish() {
-    followFish = new Fish('fish', 'assets/circle.png', 20, engine, {x: 380, y: 100}, {density: 0.001, frictionAir: 0.01, restitution: 0.5, friction: 0.1, originalSize: 250});
+    const engine = createUnderwaterEngine();
+    followFish = new fish.Fish('fish', 'assets/circle.png', 20, engine, {x: 380, y: 100}, {density: 0.001, frictionAir: 0.01, restitution: 0.5, friction: 0.1, originalSize: 250});
 }
 
 // update fish position to follow mouse
-function updatePosition(event){
+export function updatePosition(event){
     if (followFish & !fishInWorld) {
         followFish.setPosition(event.clientX, event.clientY);
     }
 }
 // drop fish into world by click
-function dropFish(event) {
+export function dropFish(event) {
     if (followFish && !fishInWorld) {
-        Matter.World.add(engine.world, followFish.getBody());
+        World.add(engine.world, followFish.getBody());
         fishInWorld = true;
     }
 }
@@ -28,21 +30,7 @@ function dropFish(event) {
 document.addEventListener('mousemove', updatePosition);
 document.addEventListener('click', dropFish);
 
-export{dropFish};
-
-// document.addEventListener('click', function(event) {
-//     dropFish(event.clientX, dropY);
-// });
-
-// document.addEventListener('keydown', function(event) {
-//     const step = 5;
-//     if (event.key === 'ArrowLeft' || event.key === 'a') {
-//         dropX -= step;
-//     }
-//     else if (event.key === 'ArrowRight' || event.key === 'd') {
-//         dropX += step;
-//     }
-//     else if (event.key === 'ArrowDown' || event.key === 's') {
-//         dropFish(dropX, dropY);
-//     }
-// });
+// export{dropFish};
+// export{updatePosition};
+// export{fishInWorld};
+// export{followFish};

@@ -1,4 +1,3 @@
-
 var Engine = Matter.Engine,
     Body = Matter.Body,
     Composite = Matter.Composite,

@@ -1,13 +1,21 @@
-import { createUnderwaterEngine } from './physics.js';
-import { initializeFollowingFish } from './controls.js';
+import * as physics from './physics.js';
+import * as controls from './controls.js';
+//import { Composite, Vector } from 'matter-js';
 
 var Engine = Matter.Engine,
-    Render = Matter.Render;
+    Render = Matter.Render,
+    World = Matter.World,
+    Bodies = Matter.Bodies,
+    Runner = Matter.Runner;
+    //Body = Matter.Body;
+    //Composite = Matter.Composite;
+    //Events = Matter.Events;
+    //Vector = Matter.Vector;
 
 // create your engine
-const engine = createUnderwaterEngine();
+const engine = physics.createUnderwaterEngine();
 
-const render = Render.create({
+let render = Render.create({
     element: document.body,
     engine: engine,
     options: {
@@ -17,9 +25,11 @@ const render = Render.create({
     }
 });
 
-Engine.run(engine);
+let ground = Bodies.rectangle(400, 600, 800, 50, { isStatic: true });
+World.add(engine.world, ground);
+controls.initializeFollowingFish();
+
 Render.run(render);
 
-initializeFollowingFish();
-
-export {engine};
+var runner = Runner.create();
+Runner.run(runner, engine);
