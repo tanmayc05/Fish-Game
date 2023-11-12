@@ -5,7 +5,7 @@ var Engine = Matter.Engine,
     Vector = Matter.Vector;
 
 export function setUpPhysics(engine) {
-    engine.world.gravity.y = 0.5;
+    //engine.world.gravity.y = 0.5;
 
     Events.on(engine, 'beforeUpdate', (event) => {
         const bodies = Composite.allBodies(engine.world);
