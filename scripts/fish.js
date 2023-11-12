@@ -33,8 +33,6 @@ export class Fish {
                 }
             }
         });
-        // add the fish to the world
-        World.add(engine.world, this.#body);
     }
     getName() {
         return this.#name;
