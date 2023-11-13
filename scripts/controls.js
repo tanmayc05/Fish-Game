@@ -46,7 +46,7 @@ export function handleKeyPress(event) {
         moveFish('right');
     }
     // Down arrow key
-    else if (keyCode === 40) {
+    else if (keyCode === 40 || keyCode == 32) {
         dropFish(event, engine);
     }
 }
