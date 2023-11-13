@@ -1,22 +1,18 @@
 import * as physics from './physics.js';
 import * as controls from './controls.js';
 
-// module aliases
-var Engine = Matter.Engine,
+const Engine = Matter.Engine,
     Render = Matter.Render,
     World = Matter.World,
     Bodies = Matter.Bodies,
-    Runner = Matter.Runner,
-    MouseConstraint = Matter.MouseConstraint;
+    Runner = Matter.Runner;
 
-// create your engine
 const engine = physics.createUnderwaterEngine();
 
-document.addEventListener('mousemove', (event) => controls.updatePosition(event, engine));
-document.addEventListener('click', (event) => controls.dropFish(event, engine));
-document.addEventListener('keydown', (event) => controls.handleKeyPress(event)); // Add this line
+document.addEventListener('click', handleFishDrop);
+document.addEventListener('keydown', controls.handleKeyPress);
 
-let render = Render.create({
+const render = Render.create({
     element: document.body,
     engine: engine,
     options: {
@@ -27,16 +23,40 @@ let render = Render.create({
     }
 });
 
-let ground = Bodies.rectangle(400, 600, 800, 10, { isStatic: true });
-const initialFish = controls.addNewFish(380, 100, engine);
-World.add(engine.world, [ground, initialFish.getBody()]);
+const WIDTH = render.options.width;
+const HEIGHT = render.options.height;
 
-const mouseConstraint = MouseConstraint.create(engine);
-World.add(engine.world, mouseConstraint);
+function setup() {
+    const wallOptions = { 
+        isStatic: true,
+        render: {
+            fillStyle: '#0077BE',
+            strokeStyle: '#0077BE',
+            lineWidth: 10
+        }
+    };
+    const wallThickness = 10;
+
+    Matter.World.add(engine.world, [
+        Bodies.rectangle(WIDTH/2, 0, WIDTH, wallThickness, wallOptions), // top
+        Bodies.rectangle(WIDTH/2, HEIGHT, WIDTH, wallThickness, wallOptions), // bottom
+        Bodies.rectangle(0, HEIGHT/2, wallThickness, HEIGHT, wallOptions), // left
+        Bodies.rectangle(WIDTH, HEIGHT/2, wallThickness, HEIGHT, wallOptions) // right
+    ]);
+}
+
+setup();
+
+const initialFish = controls.addNewFish(380, 100, engine);
+World.add(engine.world, [initialFish.getBody()]);
 
 Render.run(render);
 
-var runner = Runner.create();
+const runner = Runner.create();
 Runner.run(runner, engine);
 
-controls.initializeControls(engine); // Add this line
+controls.initializeControls(engine);
+
+function handleFishDrop(event) {
+    controls.dropFish(event, engine);
+}
