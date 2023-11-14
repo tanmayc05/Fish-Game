@@ -1,8 +1,7 @@
 import * as physics from './physics.js';
 import * as controls from './controls.js';
 
-const Engine = Matter.Engine,
-    Render = Matter.Render,
+const Render = Matter.Render,
     World = Matter.World,
     Bodies = Matter.Bodies,
     Runner = Matter.Runner;
@@ -26,26 +25,22 @@ const render = Render.create({
 const WIDTH = render.options.width;
 const HEIGHT = render.options.height;
 
-function setup() {
-    const wallOptions = { 
-        isStatic: true,
-        render: {
-            fillStyle: '#0077BE',
-            strokeStyle: '#0077BE',
-            lineWidth: 10
-        }
-    };
-    const wallThickness = 10;
 
-    Matter.World.add(engine.world, [
-        Bodies.rectangle(WIDTH/2, 0, WIDTH, wallThickness, wallOptions), // top
-        Bodies.rectangle(WIDTH/2, HEIGHT, WIDTH, wallThickness, wallOptions), // bottom
-        Bodies.rectangle(0, HEIGHT/2, wallThickness, HEIGHT, wallOptions), // left
-        Bodies.rectangle(WIDTH, HEIGHT/2, wallThickness, HEIGHT, wallOptions) // right
-    ]);
-}
+const wallOptions = { 
+    isStatic: true,
+    render: {
+        fillStyle: '#0077BE',
+        strokeStyle: '#0077BE',
+        lineWidth: 10
+    }
+};
+const wallThickness = 10;
 
-setup();
+Matter.World.add(engine.world, [
+    Bodies.rectangle(WIDTH/2, HEIGHT, WIDTH, wallThickness, wallOptions), // bottom
+    Bodies.rectangle(0, HEIGHT/2, wallThickness, HEIGHT, wallOptions), // left
+    Bodies.rectangle(WIDTH, HEIGHT/2, wallThickness, HEIGHT, wallOptions) // right
+]);
 
 const initialFish = controls.addNewFish(380, 100, engine);
 World.add(engine.world, [initialFish.getBody()]);
@@ -54,6 +49,14 @@ Render.run(render);
 
 const runner = Runner.create();
 Runner.run(runner, engine);
+
+function gameLoop() {
+    Runner.tick(runner, engine);
+    Render.world(render);
+    requestAnimationFrame(gameLoop);
+}
+
+gameLoop();
 
 controls.initializeControls(engine);
 
