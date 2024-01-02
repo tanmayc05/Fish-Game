@@ -15,7 +15,7 @@ const render = Render.create({
     element: document.body,
     engine: engine,
     options: {
-        width: 800,
+        width: 500,
         height: 600,
         wireframes: false,
         background: '#0077BE'

@@ -1,4 +1,5 @@
 import * as fish from './fish.js';
+import { WIDTH } from './main.js';
 
 var World = Matter.World;
 
@@ -38,12 +39,12 @@ export function moveFish(direction) {
         const currentX = followFish.getBody().position.x;
         const newX = direction === 'left' ? currentX - 10 : currentX + 10;
 
-        if (newX - (followFish.getRadius()) < 0 || newX + (followFish.getRadius()) > 800) {
+        if (newX - (followFish.getRadius()) < 0 || newX + (followFish.getRadius()) > WIDTH) {
             // Fish is out of bounds
             collision = true;
 
             // Bring the fish back within bounds
-            const boundedX = Math.max(followFish.getRadius() + 2, Math.min(newX, 800 - followFish.getRadius() - 2));
+            const boundedX = Math.max(followFish.getRadius() + 2, Math.min(newX, WIDTH - followFish.getRadius() - 2));
             Matter.Body.setPosition(followFish.getBody(), { x: boundedX, y: followFish.getBody().position.y });
 
             // Reset the collision flag once the fish is back within bounds
