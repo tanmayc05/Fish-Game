@@ -13,7 +13,7 @@ export function initializeControls(engineInstance) {
 }
 
 export function addNewFish(x, y, engine) {
-    newFish = new fish.Fish('fish', 'assets/circle.png', 20, engine, { x: x, y: y }, {density: 0.1,mass: 10, frictionAir: 0.01, restitution: 0, friction: 0.01, originalSize: 250 });
+    newFish = new fish.Fish('fish', 'assets/circle.png', 20, engine, {});
     World.add(engine.world, newFish.getBody());
     Matter.Body.setStatic(newFish.getBody(), true);
     dropping = false;
