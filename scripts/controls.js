@@ -9,15 +9,23 @@ let dropping = false;
 let collision = false;
 let allowInput = true;
 
-let radii = [20, 30, 40, 50, 60];
+const fishClasses = [fish.FishEgg, fish.Minnow, fish.Clownfish, fish.MoorishIdol, fish.Otter];
 
 export function initializeControls(engineInstance) {
     engine = engineInstance;
 }
 
-export function addNewFish(x, y, engine) {
-    const chosenRadius = radii[Math.floor(Math.random() * radii.length)];
-    newFish = new fish.Fish('fish', 'assets/circle.png', chosenRadius, engine);
+export function addNewFish(engine) {
+    if (!engine || !engine.world) {
+        console.error("Engine or engine.world is undefined");
+        return;
+    }
+    const randomFishClass = fishClasses[Math.floor(Math.random() * fishClasses.length)];
+    newFish = new randomFishClass();
+    if (!newFish || !newFish.getBody()) {
+        console.error("New fish or its body is undefined");
+        return;
+    }
     World.add(engine.world, newFish.getBody());
     Matter.Body.setStatic(newFish.getBody(), true);
     dropping = false;
@@ -86,7 +94,7 @@ export function dropFish(event, engine) {
         });
 
         promise.then(() => {
-            followFish = addNewFish(event.clientX, event.clientY, engine);
+            followFish = addNewFish(engine);
         });
 
         // Re-enable user input after the delay
