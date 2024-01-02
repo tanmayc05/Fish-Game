@@ -43,7 +43,6 @@ Matter.World.add(engine.world, [
 ]);
 
 const initialFish = controls.addNewFish(380, 100, engine);
-World.add(engine.world, [initialFish.getBody()]);
 
 Render.run(render);
 
@@ -53,6 +52,7 @@ Runner.run(runner, engine);
 function gameLoop() {
     Runner.tick(runner, engine);
     Render.world(render);
+
     requestAnimationFrame(gameLoop);
 }
 
