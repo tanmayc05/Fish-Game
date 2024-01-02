@@ -4,29 +4,9 @@ var Engine = Matter.Engine,
     Events = Matter.Events,
     Vector = Matter.Vector;
 
-export function setUpPhysics(engine) {
-    //engine.world.gravity.y = 0.5;
-
-    Events.on(engine, 'beforeUpdate', (event) => {
-        const bodies = Composite.allBodies(engine.world);
-
-        bodies.forEach((body) => {
-            if (body.isStatic) return;
-
-            const speed = Vector.magnitude(body.velocity);
-            const dragCoefficient = 0.0001;
-            const dragMagnitude = speed * speed * dragCoefficient;
-            const dragForce = Vector.mult(Vector.normalise(body.velocity), -dragMagnitude);
-
-            // apply drag force
-            Body.applyForce(body, body.position, dragForce);
-        });
-    });
-}
-
 export function createUnderwaterEngine() {
     const engine = Engine.create();
-    setUpPhysics(engine);
+    engine.world.gravity.y = 0.25;
     return engine;
 }
 

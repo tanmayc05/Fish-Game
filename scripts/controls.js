@@ -7,13 +7,17 @@ let newFish = null;
 let engine;
 let dropping = false;
 let collision = false;
+let allowInput = true;
+
+let radii = [20, 30, 40, 50, 60];
 
 export function initializeControls(engineInstance) {
     engine = engineInstance;
 }
 
 export function addNewFish(x, y, engine) {
-    newFish = new fish.Fish('fish', 'assets/circle.png', 20, engine, {});
+    const chosenRadius = radii[Math.floor(Math.random() * radii.length)];
+    newFish = new fish.Fish('fish', 'assets/circle.png', chosenRadius, engine);
     World.add(engine.world, newFish.getBody());
     Matter.Body.setStatic(newFish.getBody(), true);
     dropping = false;
@@ -45,6 +49,9 @@ export function moveFish(direction) {
 
 
 export function handleKeyPress(event) {
+    if (!allowInput) {
+        return;
+    }
     const keyCode = event.keyCode;
     
     // Left arrow key
@@ -62,12 +69,29 @@ export function handleKeyPress(event) {
 }
 
 export function dropFish(event, engine) {
-    if (newFish) {
+    if (newFish && allowInput) {
         dropping = true;
         Matter.Body.setStatic(newFish.getBody(), false);
+
+        // Disable user input during the delay
+        allowInput = false;
+
+        const delay = 500;
+
+        // Use a Promise to ensure proper sequencing
+        const promise = new Promise((resolve) => {
+            setTimeout(() => {
+                resolve();
+            }, delay);
+        });
+
+        promise.then(() => {
+            followFish = addNewFish(event.clientX, event.clientY, engine);
+        });
+
+        // Re-enable user input after the delay
+        setTimeout(() => {
+            allowInput = true;
+        }, delay);
     }
-    const delay = 800;
-    setTimeout(() => {
-        followFish = addNewFish(event.clientX, event.clientY, engine);
-    }, delay);
 }
