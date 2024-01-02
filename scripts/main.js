@@ -22,7 +22,7 @@ const render = Render.create({
     }
 });
 
-const WIDTH = render.options.width;
+export const WIDTH = render.options.width;
 const HEIGHT = render.options.height;
 
 
@@ -42,7 +42,7 @@ Matter.World.add(engine.world, [
     Bodies.rectangle(WIDTH, HEIGHT/2, wallThickness, HEIGHT, wallOptions) // right
 ]);
 
-const initialFish = controls.addNewFish(380, 100, engine);
+controls.addNewFish(engine);
 
 Render.run(render);
 
