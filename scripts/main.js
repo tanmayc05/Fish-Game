@@ -21,7 +21,8 @@ document.addEventListener('DOMContentLoaded', function () {
             const bodyB = pair.bodyB;
 
             // Check if bodies are instances of Fish (so it doesn't detect collision with walls or ground)
-            if (bodyA.owner instanceof Fish && bodyB.owner instanceof Fish) {
+            // also check if the fish is NOT a whale
+            if (bodyA.owner instanceof Fish && bodyB.owner instanceof Fish && bodyA.owner.getName() !== 'Whale' && bodyB.owner.getName() !== 'Whale') {
                 const fishA = bodyA.owner;
                 const fishB = bodyB.owner;
 
@@ -33,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     const mergedFish = (fishA.getNext());
                     Matter.World.remove(engine.world, [bodyA, bodyB]);
                     //use addNewFish to add the new fish to the world
-                    controls.addMergedFish(engine, bodyA.position, mergedFish.constructor);
+                    controls.addMergedFish(engine, bodyB.position, mergedFish.constructor);
                 }
             }
         }
