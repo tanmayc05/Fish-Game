@@ -13,24 +13,27 @@ let allowInput = true;
 const fishClasses = [fish.FishEgg, fish.Minnow, fish.Clownfish, fish.MoorishIdol, fish.Otter];
 
 export function initializeControls(engineInstance) {
-    engine = engineInstance;
+    engine = engineInstance; 
 }
 
-export function addNewFish(engine) {
-    if (!engine || !engine.world) {
-        console.error("Engine or engine.world is undefined");
-        return;
-    }
+export function addFishToDrop(engine, position) {
     const randomFishClass = fishClasses[Math.floor(Math.random() * fishClasses.length)];
-    newFish = new randomFishClass();
-    if (!newFish || !newFish.getBody()) {
-        console.error("New fish or its body is undefined");
-        return;
-    }
+    const newFish = new randomFishClass(position);
     World.add(engine.world, newFish.getBody());
     Matter.Body.setStatic(newFish.getBody(), true);
-    dropping = false;
+    const fishBody = newFish.getBody();
+    fishBody.owner = newFish;
     followFish = newFish;
+    dropping = false;
+    return newFish;
+}
+
+export function addMergedFish(engine, position, fishClass) {
+    const newFish = new fishClass(position);
+    World.add(engine.world, newFish.getBody());
+    Matter.Body.setStatic(newFish.getBody(), false);
+    const fishBody = newFish.getBody();
+    fishBody.owner = newFish;
     return newFish;
 }
 
@@ -77,10 +80,11 @@ export function handleKeyPress(event) {
     }
 }
 
+
 export function dropFish(event, engine) {
-    if (newFish && allowInput) {
+    if (followFish && allowInput) {
         dropping = true;
-        Matter.Body.setStatic(newFish.getBody(), false);
+        Matter.Body.setStatic(followFish.getBody(), false);
 
         // Disable user input during the delay
         allowInput = false;
@@ -95,7 +99,7 @@ export function dropFish(event, engine) {
         });
 
         promise.then(() => {
-            followFish = addNewFish(engine);
+            followFish = addFishToDrop(engine);
         });
 
         // Re-enable user input after the delay
