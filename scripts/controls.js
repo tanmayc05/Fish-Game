@@ -104,6 +104,7 @@ export function moveFish(direction) {
                 x: boundedX,
                 y: followFish.getBody().position.y,
             });
+        }
 
     }
 }

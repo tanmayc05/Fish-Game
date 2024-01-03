@@ -71,13 +71,13 @@ const render = Render.create({
     },
 });
 
-const invisibleLineY = 175;
+const loseBoundary = 150;
 // Attach an event listener to the renderer for drawing the line
 Matter.Events.on(render, "afterRender", function () {
     const context = render.context; // Get the context from the renderer
     context.beginPath();
-    context.moveTo(0, invisibleLineY); // Start of the line at the left edge
-    context.lineTo(render.options.width, invisibleLineY); // End of the line at the right edge
+    context.moveTo(0, loseBoundary); // Start of the line at the left edge
+    context.lineTo(render.options.width, loseBoundary); // End of the line at the right edge
     context.strokeStyle = "red"; // Set the line color
     context.lineWidth = 1; // Set the line thickness
     context.stroke(); // Draw the line
@@ -133,7 +133,7 @@ function isCanvasFilled() {
             const bottomOfFruit = body.position.y + body.circleRadius;
             // Check if the fruit has settled above the line
             if (
-                bottomOfFruit < invisibleLineY &&
+                bottomOfFruit < loseBoundary &&
                 Matter.Vector.magnitude(body.velocity) < 0.1 &&
                 Math.abs(body.angularVelocity) < 0.1
             ) {
@@ -142,7 +142,7 @@ function isCanvasFilled() {
 
             // Check if the fruit is below the line and moving
             if (
-                bottomOfFruit >= invisibleLineY &&
+                bottomOfFruit >= loseBoundary &&
                 (Matter.Vector.magnitude(body.velocity) > 0.25 ||
                     Math.abs(body.angularVelocity) > 0.25)
             ) {

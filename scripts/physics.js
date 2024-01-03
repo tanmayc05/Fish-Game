@@ -7,3 +7,4 @@ export function createUnderwaterEngine() {
     const engine = Engine.create();
     engine.world.gravity.y = 0.25;
     return engine;
+}

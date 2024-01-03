@@ -43,7 +43,7 @@ export class FishEgg extends Fish {
             restitution: 0.1, // bounciness
             friction: 0.00001, // friction against other objects
         });
-        const next = new Minnow();
+        const next = new Minnow;
         super(name, imagePath, radius, body, next);
     }
 }
@@ -57,7 +57,7 @@ export class Minnow extends Fish {
             restitution: 0.1, // bounciness
             friction: 0.00001, // friction against other objects
         });
-        const next = new Clownfish();
+        const next = new Clownfish;
         super(name, imagePath, radius, body, next);
     }
 }
@@ -71,7 +71,7 @@ export class Clownfish extends Fish {
             restitution: 0.1, // bounciness
             friction: 0.00001, // friction against other objects
         });
-        const next = new MoorishIdol();
+        const next = new MoorishIdol;
         super(name, imagePath, radius, body, next);
     }
 }
@@ -85,7 +85,7 @@ export class MoorishIdol extends Fish {
             restitution: 0.1, // bounciness
             friction: 0.00001, // friction against other objects
         });
-        const next = new Otter();
+        const next = new Otter;
         super(name, imagePath, radius, body, next);
     }
 }
@@ -99,7 +99,7 @@ export class Otter extends Fish {
             restitution: 0.1, // bounciness
             friction: 0.00001, // friction against other objects
         });
-        const next = new Turtle();
+        const next = new Turtle;
         super(name, imagePath, radius, body, next);
     }
 }
@@ -113,7 +113,7 @@ export class Turtle extends Fish {
             restitution: 0.1, // bounciness
             friction: 0.00001, // friction against other objects
         });
-        const next = new Manatee();
+        const next = new Manatee;
         super(name, imagePath, radius, body, next);
     }
 }
@@ -127,7 +127,7 @@ export class Manatee extends Fish {
             restitution: 0.1, // bounciness
             friction: 0.00001, // friction against other objects
         });
-        const next = new Dolphin();
+        const next = new Dolphin;
         super(name, imagePath, radius, body, next);
     }
 }
@@ -141,7 +141,7 @@ export class Dolphin extends Fish {
             restitution: 0.1, // bounciness
             friction: 0.00001, // friction against other objects
         });
-        const next = new Shark();
+        const next = new Shark;
         super(name, imagePath, radius, body, next);
     }
 }
@@ -155,7 +155,7 @@ export class Shark extends Fish {
             restitution: 0.1, // bounciness
             friction: 0.00001, // friction against other objects
         });
-        const next = new Orca();
+        const next = new Orca;
         super(name, imagePath, radius, body, next);
     }
 }
@@ -169,7 +169,7 @@ export class Orca extends Fish {
             restitution: 0.1, // bounciness
             friction: 0.00001, // friction against other objects
         });
-        const next = new Whale();
+        const next = new Whale;
         super(name, imagePath, radius, body, next);
     }
 }
