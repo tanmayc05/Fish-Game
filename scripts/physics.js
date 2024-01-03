@@ -1,3 +1,5 @@
+"use strict";
+
 var Engine = Matter.Engine,
     Body = Matter.Body,
     Composite = Matter.Composite,
@@ -10,21 +12,12 @@ export function createUnderwaterEngine() {
     return engine;
 }
 
-
-
-
-
-
-
-
-
 //initialize matter.js
 // const Engine = Matter.Engine;
 // const Render = Matter.Render;
 // const World = Matter.World;
 // const Bodies = Matter.Bodies;
 // const Body = Matter.Body;
-
 
 // //create your engine
 // const engine = Engine.create();

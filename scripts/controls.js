@@ -1,5 +1,7 @@
-import * as fish from './fish.js';
-import { WIDTH } from './main.js';
+"use strict";
+
+import * as fish from "./fish.js";
+import { WIDTH } from "./main.js";
 
 var World = Matter.World;
 
@@ -10,14 +12,21 @@ let dropping = false;
 let collision = false;
 let allowInput = true;
 
-const fishClasses = [fish.FishEgg, fish.Minnow, fish.Clownfish, fish.MoorishIdol, fish.Otter];
+const fishClasses = [
+    fish.FishEgg,
+    fish.Minnow,
+    fish.Clownfish,
+    fish.MoorishIdol,
+    fish.Otter,
+];
 
 export function initializeControls(engineInstance) {
-    engine = engineInstance; 
+    engine = engineInstance;
 }
 
 export function addFishToDrop(engine, position) {
-    const randomFishClass = fishClasses[Math.floor(Math.random() * fishClasses.length)];
+    const randomFishClass =
+        fishClasses[Math.floor(Math.random() * fishClasses.length)];
     const newFish = new randomFishClass(position);
     World.add(engine.world, newFish.getBody());
     Matter.Body.setStatic(newFish.getBody(), true);
@@ -40,46 +49,56 @@ export function addMergedFish(engine, position, fishClass) {
 export function moveFish(direction) {
     if (followFish && !dropping) {
         const currentX = followFish.getBody().position.x;
-        const newX = direction === 'left' ? currentX - 10 : currentX + 10;
+        const newX = direction === "left" ? currentX - 10 : currentX + 10;
 
-        if (newX - (followFish.getRadius()) < 0 || newX + (followFish.getRadius()) > WIDTH) {
+        if (
+            newX - followFish.getRadius() < 0 ||
+            newX + followFish.getRadius() > WIDTH
+        ) {
             // Fish is out of bounds
             collision = true;
 
             // Bring the fish back within bounds
-            const boundedX = Math.max(followFish.getRadius() + 2, Math.min(newX, WIDTH - followFish.getRadius() - 2));
-            Matter.Body.setPosition(followFish.getBody(), { x: boundedX, y: followFish.getBody().position.y });
+            const boundedX = Math.max(
+                followFish.getRadius() + 2,
+                Math.min(newX, WIDTH - followFish.getRadius() - 2)
+            );
+            Matter.Body.setPosition(followFish.getBody(), {
+                x: boundedX,
+                y: followFish.getBody().position.y,
+            });
 
             // Reset the collision flag once the fish is back within bounds
             collision = false;
         } else {
             // Fish is within bounds, move normally
-            Matter.Body.setPosition(followFish.getBody(), { x: newX, y: followFish.getBody().position.y });
+            Matter.Body.setPosition(followFish.getBody(), {
+                x: newX,
+                y: followFish.getBody().position.y,
+            });
         }
     }
 }
-
 
 export function handleKeyPress(event) {
     if (!allowInput) {
         return;
     }
     const keyCode = event.keyCode;
-    
+
     // Left arrow key
     if (keyCode === 37) {
-        moveFish('left');
+        moveFish("left");
     }
     // Right arrow key
     else if (keyCode === 39) {
-        moveFish('right');
+        moveFish("right");
     }
     // Down arrow key
     else if (keyCode === 40 || keyCode == 32) {
         dropFish(event, engine);
     }
 }
-
 
 export function dropFish(event, engine) {
     if (followFish && allowInput) {
