@@ -11,6 +11,7 @@ const engine = physics.createUnderwaterEngine();
 
 document.addEventListener('click', handleFishDrop);
 document.addEventListener('keydown', controls.handleKeyPress);
+document.addEventListener('mousemove', controls.handleMouseMove);
 document.addEventListener('DOMContentLoaded', function () {
     Matter.Events.on(engine, 'collisionStart', function (event) {
         const pairs = event.pairs;
@@ -25,16 +26,12 @@ document.addEventListener('DOMContentLoaded', function () {
             if (bodyA.owner instanceof Fish && bodyB.owner instanceof Fish && bodyA.owner.getName() !== 'Whale' && bodyB.owner.getName() !== 'Whale') {
                 const fishA = bodyA.owner;
                 const fishB = bodyB.owner;
-
-                console.log(fishA.getName() + ' collided with ' + fishB.getName());
-
-                // Check if fish can merge
+                // Check if fish are the same
                 if (fishA.getName() === fishB.getName()) {
                     // Merge the fish
                     const mergedFish = (fishA.getNext());
                     Matter.World.remove(engine.world, [bodyA, bodyB]);
-                    //use addNewFish to add the new fish to the world
-                    //make the new fish's position in the middle of the two fish that merged
+                    //add and make the new fish's position in the middle of the two fish that merged
                     const position = {x: (bodyA.position.x + bodyB.position.x) / 2, y: (bodyA.position.y + bodyB.position.y) / 2};
                     controls.addMergedFish(engine, position, mergedFish.constructor);
                 }
@@ -43,12 +40,16 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+const gameContainer = document.createElement('div');
+gameContainer.id = 'game-container';
+document.body.appendChild(gameContainer);
+
 const render = Render.create({
-    element: document.body,
+    element: gameContainer,
     engine: engine,
     options: {
-        width: 500,
-        height: 600,
+        width: 350,
+        height: 500,
         wireframes: false,
         background: '#0077BE'
     }
