@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     //use addNewFish to add the new fish to the world
                     //make the new fish's position in the middle of the two fish that merged
                     const position = {x: (bodyA.position.x + bodyB.position.x) / 2, y: (bodyA.position.y + bodyB.position.y) / 2};
-                    const newFish = controls.addMergedFish(engine, position, mergedFish.constructor);
+                    controls.addMergedFish(engine, position, mergedFish.constructor);
                 }
             }
         }
