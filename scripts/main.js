@@ -11,10 +11,11 @@ const Render = Matter.Render,
 
 const engine = physics.createUnderwaterEngine();
 
-document.addEventListener("click", handleFishDrop);
-document.addEventListener("keydown", controls.handleKeyPress);
-document.addEventListener("DOMContentLoaded", function () {
-    Matter.Events.on(engine, "collisionStart", function (event) {
+document.addEventListener('click', handleFishDrop);
+document.addEventListener('keydown', controls.handleKeyPress);
+document.addEventListener('mousemove', controls.handleMouseMove);
+document.addEventListener('DOMContentLoaded', function () {
+    Matter.Events.on(engine, 'collisionStart', function (event) {
         const pairs = event.pairs;
 
         for (let i = 0; i < pairs.length; i++) {
@@ -32,12 +33,8 @@ document.addEventListener("DOMContentLoaded", function () {
             ) {
                 const fishA = bodyA.owner;
                 const fishB = bodyB.owner;
-
-                //console.log(
-                //    fishA.getName() + " collided with " + fishB.getName()
-                //);
-
-                // Check if fish can merge
+              
+                // Check if fish are the same
                 if (fishA.getName() === fishB.getName()) {
                     // Merge the fish
                     const mergedFish = fishA.getNext();
@@ -59,8 +56,12 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+const gameContainer = document.createElement('div');
+gameContainer.id = 'game-container';
+document.body.appendChild(gameContainer);
+
 const render = Render.create({
-    element: document.body,
+    element: gameContainer,
     engine: engine,
     options: {
         width: 350,
