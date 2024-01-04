@@ -105,7 +105,12 @@ export function moveFish(direction) {
                 y: followFish.getBody().position.y,
             });
         }
-
+        else {
+            Matter.Body.setPosition(followFish.getBody(), {
+                x: newX,
+                y: followFish.getBody().position.y,
+            });
+        }
     }
 }
 
