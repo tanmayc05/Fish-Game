@@ -4,10 +4,16 @@
     <meta charset="UTF-8">
     <title>Fish Merging Game</title>
     <link rel="stylesheet" type="text/css" href="styles/styles.css">
-    <script type="text/javascript" src="matter.min.js"></script>
-    <script defer type="module" src="scripts/main.js"></script>
+    
 </head>
 <body>
-    <div id="game-container"></div>
+    <div id="game-container">
+        <div id="game-over-screen" style="display: none;">
+            <div id="game-over-message">Game Over</div>
+            <button id="restart-button">Restart</button>
+        </div>
+    </div>
+    <script type="text/javascript" src="matter.min.js"></script>
+    <script defer type="module" src="scripts/main.js"></script>
 </body>
 </html>

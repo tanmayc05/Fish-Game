@@ -121,7 +121,7 @@ export function gameLoop() {
 
     if (isCanvasFilled()) {
         console.log("Game Over");
-        controls.resetGame();
+        controls.gameOver();
         //requestAnimationFrame(gameLoop);
         //prompt("boZO!");
         return;
@@ -131,7 +131,7 @@ export function gameLoop() {
 }
 
 function isCanvasFilled() {
-    let fruitSettledAboveLine = false;
+    let fishSettledAboveLine = false;
     let canvasFilledBelowLine = true;
 
     engine.world.bodies.forEach((body) => {
@@ -143,7 +143,7 @@ function isCanvasFilled() {
                 Matter.Vector.magnitude(body.velocity) < 0.1 &&
                 Math.abs(body.angularVelocity) < 0.1
             ) {
-                fruitSettledAboveLine = true;
+                fishSettledAboveLine = true;
             }
 
             // Check if the fruit is below the line and moving
@@ -156,12 +156,11 @@ function isCanvasFilled() {
             }
         }
     });
-
-    return fruitSettledAboveLine && canvasFilledBelowLine;
+    return fishSettledAboveLine && canvasFilledBelowLine;
 }
 
 gameLoop();
 
 function handleFishDrop(event) {
-    controls.dropFish(event, engine);
+    controls.dropFish(engine);
 }
