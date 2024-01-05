@@ -209,6 +209,7 @@ export function resetGame() {
         leftWall, // left
         rightWall // right
     ]);
+    controls.addFishToDrop(engine);
     // This will reload the page
     //location.reload();
 

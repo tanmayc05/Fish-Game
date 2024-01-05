@@ -71,7 +71,7 @@ const render = Render.create({
     },
 });
 
-const loseBoundary = 400;
+const loseBoundary = 450;
 // Attach an event listener to the renderer for drawing the line
 Matter.Events.on(render, "afterRender", function () {
     const context = render.context; // Get the context from the renderer
