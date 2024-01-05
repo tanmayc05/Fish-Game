@@ -9,7 +9,7 @@ const Render = Matter.Render,
     Bodies = Matter.Bodies,
     Runner = Matter.Runner;
 
-const engine = physics.createUnderwaterEngine();
+export const engine = physics.createUnderwaterEngine();
 
 document.addEventListener('click', handleFishDrop);
 document.addEventListener('keydown', controls.handleKeyPress);
@@ -71,7 +71,7 @@ const render = Render.create({
     },
 });
 
-const loseBoundary = 150;
+const loseBoundary = 400;
 // Attach an event listener to the renderer for drawing the line
 Matter.Events.on(render, "afterRender", function () {
     const context = render.context; // Get the context from the renderer
@@ -96,10 +96,14 @@ const wallOptions = {
 };
 const wallThickness = 10;
 
+export const ground = Bodies.rectangle(WIDTH / 2, HEIGHT, WIDTH, wallThickness, wallOptions);
+export const rightWall = Bodies.rectangle(WIDTH, HEIGHT / 2, wallThickness, HEIGHT, wallOptions);
+export const leftWall = Bodies.rectangle(0, HEIGHT / 2, wallThickness, HEIGHT, wallOptions);
+
 Matter.World.add(engine.world, [
-    Bodies.rectangle(WIDTH / 2, HEIGHT, WIDTH, wallThickness, wallOptions), // bottom
-    Bodies.rectangle(0, HEIGHT / 2, wallThickness, HEIGHT, wallOptions), // left
-    Bodies.rectangle(WIDTH, HEIGHT / 2, wallThickness, HEIGHT, wallOptions), // right
+    ground, // bottom
+    leftWall, // left
+    rightWall, // right
 ]);
 
 // Attach an event listener to draw the line
@@ -111,17 +115,19 @@ Render.run(render);
 const runner = Runner.create();
 Runner.run(runner, engine);
 
-function gameLoop() {
+export function gameLoop() {
     Runner.tick(runner, engine);
     Render.world(render);
 
     if (isCanvasFilled()) {
         console.log("Game Over");
-        prompt("boZO!");
+        controls.resetGame();
+        //requestAnimationFrame(gameLoop);
+        //prompt("boZO!");
         return;
     }
 
-    requestAnimationFrame(gameLoop);
+    requestAnimationFrame(gameLoop);    
 }
 
 function isCanvasFilled() {

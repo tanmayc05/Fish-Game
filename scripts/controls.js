@@ -2,6 +2,8 @@
 
 import * as fish from "./fish.js";
 import { WIDTH } from "./main.js";
+import { engine } from "./main.js";
+import {ground, rightWall, leftWall, gameLoop }from "./main.js";
 
 var World = Matter.World;
 
@@ -183,4 +185,42 @@ export function dropFish(event, engine) {
             allowInput = true;
         }, delay);
     }
+}
+
+export function resetGame() {
+    // Remove all fish bodies from the world
+
+    /*engine.world.bodies.forEach((body) => {
+        if (body.owner instanceof fish.Fish) {
+            World.remove(engine.world, body);
+        }
+
+        World.remove(engine.world, body);
+    });*/
+    //World.remove(engine.world, ground);
+    //World.add(engine.world, ground);
+
+    alert("The game will now restart.");
+
+    Matter.World.clear(engine.world);
+
+    Matter.World.add(engine.world, [
+        ground, // bottom
+        leftWall, // left
+        rightWall // right
+    ]);
+    // This will reload the page
+    //location.reload();
+
+    // Reset player points
+    playerPoints = 0;
+    pointsText.textContent = playerPoints;
+
+    // You might need additional steps here to reset the game state, such as:
+    // - Resetting any game timers or counters
+    // - Positioning the player or game elements to their start positions
+    // - Re-adding any initial game bodies or elements
+
+    // Start the game loop again
+    requestAnimationFrame(gameLoop);
 }
