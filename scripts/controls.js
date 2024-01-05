@@ -200,7 +200,7 @@ export function resetGame() {
     //World.remove(engine.world, ground);
     //World.add(engine.world, ground);
 
-    alert("The game will now restart.");
+    //alert("The game will now restart.");
 
     Matter.World.clear(engine.world);
 
@@ -209,9 +209,9 @@ export function resetGame() {
         leftWall, // left
         rightWall // right
     ]);
-    controls.addFishToDrop(engine);
+    addFishToDrop(engine);
     // This will reload the page
-    //location.reload();
+    location.reload();
 
     // Reset player points
     playerPoints = 0;
