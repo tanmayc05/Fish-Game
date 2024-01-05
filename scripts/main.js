@@ -97,8 +97,8 @@ const wallOptions = {
 const wallThickness = 10;
 
 export const ground = Bodies.rectangle(WIDTH / 2, HEIGHT, WIDTH, wallThickness, wallOptions);
-export const rightWall = Bodies.rectangle(WIDTH, HEIGHT / 2, wallThickness, HEIGHT, wallOptions);
-export const leftWall = Bodies.rectangle(0, HEIGHT / 2, wallThickness, HEIGHT, wallOptions);
+export const rightWall = Bodies.rectangle(WIDTH+(wallThickness/2), HEIGHT / 2, wallThickness, HEIGHT, wallOptions);
+export const leftWall = Bodies.rectangle(-wallThickness/2, HEIGHT / 2, wallThickness, HEIGHT, wallOptions);
 
 Matter.World.add(engine.world, [
     ground, // bottom
