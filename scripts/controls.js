@@ -29,7 +29,8 @@ const fishPoints = {
     Manatee: 64,
     Dolphin: 128,
     Shark: 256,
-    Whale: 512
+    Orca: 512,
+    Whale: 1024
 };
 
 export function initializeControls(engineInstance) {
