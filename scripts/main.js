@@ -156,8 +156,6 @@ function isCanvasFilled() {
 
 gameLoop();
 
-controls.initializeControls(engine);
-
 function handleFishDrop(event) {
     controls.dropFish(event, engine);
 }

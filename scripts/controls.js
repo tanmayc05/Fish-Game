@@ -6,7 +6,6 @@ import { WIDTH } from "./main.js";
 var World = Matter.World;
 
 let followFish = null;
-let engine;
 let dropping = false;
 let allowInput = true;
 let playerPoints = 0;
