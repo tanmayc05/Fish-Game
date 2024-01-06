@@ -67,6 +67,8 @@ const render = Render.create({
         height: 500,
         wireframes: false,
         background: "#0077BE",
+        showAngleIndicator: false, 
+        showCollisions: false, 
     },
 });
 
@@ -115,14 +117,13 @@ const runner = Runner.create();
 Runner.run(runner, engine);
 
 export function gameLoop() {
-    Runner.tick(runner, engine);
+    const delta = 16; // Fixed timestep of 16 milliseconds (60 FPS)
+    Runner.tick(runner, engine, delta);
     Render.world(render);
 
     if (isCanvasFilled()) {
         console.log("Game Over");
         controls.gameOver();
-        //requestAnimationFrame(gameLoop);
-        //prompt("boZO!");
         return;
     }
 
