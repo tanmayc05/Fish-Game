@@ -192,7 +192,10 @@ export function gameOver() {
     //remove ground
     Matter.World.remove(engine.world, ground);
     gameOverScreen.style.display = "block";
-    restartButton.addEventListener("click", resetGame);
+    restartButton.addEventListener("click", function(event) {
+        event.stopPropagation(); // Prevents the event from propagating further
+        resetGame();
+    });
 }
 
 export function resetGame() {
