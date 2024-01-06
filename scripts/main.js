@@ -180,15 +180,6 @@ function isCanvasFilled() {
             ) {
                 drawLineSettled = true;
             }
-
-            // Check if the fish is below the line boundary and moving
-            if (
-                fruitPos >= lineBoundary &&
-                (Matter.Vector.magnitude(body.velocity) > 0.25 ||
-                    Math.abs(body.angularVelocity) > 0.25)
-            ) {
-                canvasFilledDrawLine = false;
-            }
         }
     });
 
