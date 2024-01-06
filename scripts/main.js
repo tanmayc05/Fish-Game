@@ -168,11 +168,15 @@ function isCanvasFilled() {
             ) {
                 canvasFilledBelowLine = false;
             }
+        }
+    });
 
+    engine.world.bodies.forEach((body) => {
+        if (body.owner instanceof Fish && !body.isStatic) {
             const fruitPos = body.position.y;
 
 
-            // Check if the fish has settled above the line boundary
+            // Check if the fish has settled above the lose boundary
             if (
                 fruitPos < lineBoundary &&
                 Matter.Vector.magnitude(body.velocity) < 0.1 &&
@@ -181,7 +185,7 @@ function isCanvasFilled() {
                 drawLineSettled = true;
             }
 
-            // Check if the fish is below the line boundary and moving
+            // Check if the fish is below the lose boundary and moving
             if (
                 fruitPos >= lineBoundary &&
                 (Matter.Vector.magnitude(body.velocity) > 0.25 ||
