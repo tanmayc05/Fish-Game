@@ -141,6 +141,8 @@ export function gameLoop() {
     requestAnimationFrame(gameLoop);    
 }
 
+const fishTimeouts = new Map(); // Map to store timeouts for each fish
+
 function isCanvasFilled() {
     let fishSettledAboveLine = false;
     let canvasFilledBelowLine = true;
@@ -149,24 +151,45 @@ function isCanvasFilled() {
 
     engine.world.bodies.forEach((body) => {
         if (body.owner instanceof Fish && !body.isStatic) {
-            const bottomOfFruit = body.position.y + body.circleRadius;
+            const fish = body.owner;
+            const bottomOfFish = body.position.y + body.circleRadius;
 
-            // Check if the fish has settled above the lose boundary
+            // Check if the fish has settled above the line
             if (
-                bottomOfFruit < loseBoundary &&
+                bottomOfFish < loseBoundary &&
                 Matter.Vector.magnitude(body.velocity) < 0.1 &&
                 Math.abs(body.angularVelocity) < 0.1
             ) {
-                fishSettledAboveLine = true;
+                if (!fishTimeouts.has(fish)) {
+                    // If the fish is settled above the line for the first time, set a timeout
+                    const timeout = setTimeout(() => {
+                        fishSettledAboveLine = true;
+                        // Remove the fish from the timeout map
+                        fishTimeouts.delete(fish);
+                        // Check if all fish are settled above the line
+                        if ([...fishTimeouts.values()].length === 0 && canvasFilledBelowLine) {
+                            console.log("Game Over");
+                            controls.gameOver();
+                        }
+                    }, 1500);
+                    fishTimeouts.set(fish, timeout);
+                }
             }
+
 
             // Check if the fish is below the lose boundary and moving
             if (
-                bottomOfFruit >= loseBoundary &&
+                bottomOfFish >= loseBoundary &&
                 (Matter.Vector.magnitude(body.velocity) > 0.25 ||
                     Math.abs(body.angularVelocity) > 0.25)
             ) {
                 canvasFilledBelowLine = false;
+                // If the fish goes below the line, clear its timeout
+                const timeout = fishTimeouts.get(fish);
+                if (timeout) {
+                    clearTimeout(timeout);
+                    fishTimeouts.delete(fish);
+                }
             }
 
             const fruitPos = body.position.y;
