@@ -15,6 +15,7 @@ let dropping = false;
 let allowInput = true;
 let playerPoints = 0;
 let isGameOver = false;
+let engine;
 
 const fishClasses = [
     fish.FishEgg,
@@ -143,7 +144,7 @@ export function handleMouseMove(event) {
     }
 }
 
-export function handleKeyPress(event) {
+export function handleKeyPress(event, engine) {
     if (!allowInput) {
         return;
     }
@@ -163,7 +164,8 @@ export function handleKeyPress(event) {
     }
 }
 
-export function dropFish(engine) {
+
+export function dropFish(event, engine) {
     if (followFish && allowInput && !isGameOver) {
         dropping = true;
         Matter.Body.setStatic(followFish.getBody(), false);
