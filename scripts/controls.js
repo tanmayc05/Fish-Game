@@ -26,16 +26,15 @@ const fishClasses = [
 
 const fishPoints = {
     FishEgg: 1,
-    Minnow: 2,
-    Clownfish: 4,
-    MoorishIdol: 8,
-    Otter: 16,
-    Turtle: 32,
-    Manatee: 64,
-    Dolphin: 128,
-    Shark: 256,
-    Orca: 512,
-    Whale: 1024
+    Minnow: 3,
+    Clownfish: 6,
+    MoorishIdol: 10,
+    Otter: 15,
+    Turtle: 21,
+    Manatee: 28,
+    Dolphin: 36,
+    Shark: 45,
+    Orca: 55
 };
 
 export function initializeControls(engineInstance) {
