@@ -60,8 +60,8 @@ function initializePointsText() {
 const pointsText = initializePointsText();
 
 export function addFishToDrop(position) {
-    const randomFishClass =
-        fishClasses[Math.floor(Math.random() * fishClasses.length)];
+    console.log("addFishToDrop");
+    const randomFishClass = fishClasses[Math.floor(Math.random() * fishClasses.length)];
     const newFish = new randomFishClass(position);
     World.add(engine.world, newFish.getBody());
     Matter.Body.setStatic(newFish.getBody(), true);
@@ -69,6 +69,7 @@ export function addFishToDrop(position) {
     fishBody.owner = newFish;
     followFish = newFish;
     dropping = false;
+    isGameOver = false;
     return newFish;
 }
 
@@ -138,28 +139,28 @@ export function handleMouseMove(event) {
 }
 
 export function handleKeyPress(event) {
-    if (!allowInput) {
-        return;
-    }
-    const keyCode = event.keyCode;
+    if (allowInput && !isGameOver) {
+        const keyCode = event.keyCode;
 
-    // Left arrow key
-    if (keyCode === 37) {
-        moveFish("left");
-    }
-    // Right arrow key
-    else if (keyCode === 39) {
-        moveFish("right");
-    }
-    // Down arrow key
-    else if (keyCode === 40 || keyCode == 32) {
-        dropFish();
+        // Left arrow key
+        if (keyCode === 37) {
+            moveFish("left");
+        }
+        // Right arrow key
+        else if (keyCode === 39) {
+            moveFish("right");
+        }
+        // Down arrow key
+        else if (keyCode === 40 || keyCode == 32) {
+            dropFish();
+        }
     }
 }
 
 
 export function dropFish(event) {
     if (followFish && allowInput && !isGameOver) {
+        console.log("dropFish");
         dropping = true;
         Matter.Body.setStatic(followFish.getBody(), false);
 
@@ -190,25 +191,11 @@ export function gameOver() {
     isGameOver = true;
     //remove ground
     Matter.World.remove(engine.world, ground);
-    gameOverScreen.style.display = "flex";
+    gameOverScreen.style.display = "block";
     restartButton.addEventListener("click", resetGame);
 }
 
 export function resetGame() {
-    // Remove all fish bodies from the world
-
-    /*engine.world.bodies.forEach((body) => {
-        if (body.owner instanceof fish.Fish) {
-            World.remove(engine.world, body);
-        }
-
-        World.remove(engine.world, body);
-    });*/
-    //World.remove(engine.world, ground);
-    //World.add(engine.world, ground);
-
-    //alert("The game will now restart.");
-
     Matter.World.clear(engine.world);
 
     Matter.World.add(engine.world, [
@@ -217,21 +204,13 @@ export function resetGame() {
         rightWall // right
     ]);
     addFishToDrop();
-    // This will reload the page
-    //location.reload();
-
+    
     // Reset player points
     playerPoints = 0;
     pointsText.textContent = playerPoints;
 
     // Hide the game over screen
     gameOverScreen.style.display = "none";
-    isGameOver = false;
-
-    // You might need additional steps here to reset the game state, such as:
-    // - Resetting any game timers or counters
-    // - Positioning the player or game elements to their start positions
-    // - Re-adding any initial game bodies or elements
 
     // Start the game loop again
     requestAnimationFrame(gameLoop);
