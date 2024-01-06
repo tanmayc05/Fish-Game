@@ -2,6 +2,7 @@
 
 import * as fish from "./fish.js";
 import { WIDTH, engine } from "./main.js";
+import {defaultStartingPositionY} from "./fish.js";
 import {ground, rightWall, leftWall, gameLoop }from "./main.js";
 
 const gameOverScreen = document.getElementById('game-over-screen');
@@ -58,10 +59,14 @@ function initializePointsText() {
 
 const pointsText = initializePointsText();
 
-export function addFishToDrop(position) {
+export function addFishToDrop(event, position) {
     //console.log("addFishToDrop");
     const randomFishClass = fishClasses[Math.floor(Math.random() * fishClasses.length)];
     const newFish = new randomFishClass(position);
+    if (event){
+        const mouseX = event.clientX;
+        Matter.Body.setPosition(newFish.getBody(), { x: mouseX, y: defaultStartingPositionY});
+    }
     World.add(engine.world, newFish.getBody());
     Matter.Body.setStatic(newFish.getBody(), true);
     const fishBody = newFish.getBody();
@@ -176,7 +181,7 @@ export function dropFish(event) {
         });
 
         promise.then(() => {
-            followFish = addFishToDrop();
+            followFish = addFishToDrop(event);
         });
 
         // Re-enable user input after the delay
