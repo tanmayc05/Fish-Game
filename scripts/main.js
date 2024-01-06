@@ -10,10 +10,10 @@ const Render = Matter.Render,
     Runner = Matter.Runner;
 
 export const engine = physics.createUnderwaterEngine();
-controls.initializeControls(engine);
+//controls.initializeControls(engine);
 
 document.addEventListener('click', handleFishDrop);
-document.addEventListener('keydown', (event) => controls.handleKeyPress(event, engine));
+document.addEventListener('keydown', (event) => controls.handleKeyPress(event));
 document.addEventListener('mousemove', controls.handleMouseMove);
 document.addEventListener('DOMContentLoaded', function () {
     Matter.Events.on(engine, 'collisionStart', function (event) {
@@ -47,7 +47,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         y: (bodyA.position.y + bodyB.position.y) / 2,
                     };
                     controls.addMergedFish(
-                        engine,
                         position,
                         mergedFish.constructor
                     );
@@ -109,7 +108,7 @@ Matter.World.add(engine.world, [
 
 // Attach an event listener to draw the line
 
-controls.addFishToDrop(engine);
+controls.addFishToDrop();
 
 Render.run(render);
 
@@ -163,5 +162,5 @@ function isCanvasFilled() {
 gameLoop();
 
 function handleFishDrop(event) {
-    controls.dropFish(engine);
+    controls.dropFish();
 }

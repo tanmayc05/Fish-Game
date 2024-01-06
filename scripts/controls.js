@@ -15,7 +15,6 @@ let dropping = false;
 let allowInput = true;
 let playerPoints = 0;
 let isGameOver = false;
-let engine;
 
 const fishClasses = [
     fish.FishEgg,
@@ -66,7 +65,7 @@ function initializePointsText() {
 
 const pointsText = initializePointsText();
 
-export function addFishToDrop(engine, position) {
+export function addFishToDrop(position) {
     const randomFishClass =
         fishClasses[Math.floor(Math.random() * fishClasses.length)];
     const newFish = new randomFishClass(position);
@@ -80,7 +79,7 @@ export function addFishToDrop(engine, position) {
 }
 
 
-export function addMergedFish(engine, position, fishClass) {
+export function addMergedFish(position, fishClass) {
     const newFish = new fishClass(position);
     World.add(engine.world, newFish.getBody());
     Matter.Body.setStatic(newFish.getBody(), false);
@@ -144,7 +143,7 @@ export function handleMouseMove(event) {
     }
 }
 
-export function handleKeyPress(event, engine) {
+export function handleKeyPress(event) {
     if (!allowInput) {
         return;
     }
@@ -160,12 +159,12 @@ export function handleKeyPress(event, engine) {
     }
     // Down arrow key
     else if (keyCode === 40 || keyCode == 32) {
-        dropFish(engine);
+        dropFish();
     }
 }
 
 
-export function dropFish(event, engine) {
+export function dropFish(event) {
     if (followFish && allowInput && !isGameOver) {
         dropping = true;
         Matter.Body.setStatic(followFish.getBody(), false);
@@ -183,7 +182,7 @@ export function dropFish(event, engine) {
         });
 
         promise.then(() => {
-            followFish = addFishToDrop(engine);
+            followFish = addFishToDrop();
         });
 
         // Re-enable user input after the delay
@@ -223,7 +222,7 @@ export function resetGame() {
         leftWall, // left
         rightWall // right
     ]);
-    addFishToDrop(engine);
+    addFishToDrop();
     // This will reload the page
     //location.reload();
 
