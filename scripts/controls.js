@@ -1,8 +1,7 @@
 "use strict";
 
 import * as fish from "./fish.js";
-import { WIDTH } from "./main.js";
-import { engine } from "./main.js";
+import { WIDTH, engine } from "./main.js";
 import {ground, rightWall, leftWall, gameLoop }from "./main.js";
 
 const gameOverScreen = document.getElementById('game-over-screen');
@@ -37,11 +36,6 @@ const fishPoints = {
     Orca: 512,
     Whale: 1024
 };
-
-export function initializeControls(engineInstance) {
-    engine = engineInstance;
-}
-
 
 function initializePointsText() {
     const pointsContainer = document.createElement('div');

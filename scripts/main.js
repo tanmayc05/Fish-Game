@@ -9,8 +9,7 @@ const Render = Matter.Render,
     Bodies = Matter.Bodies,
     Runner = Matter.Runner;
 
-export const engine = physics.createUnderwaterEngine();
-//controls.initializeControls(engine);
+export let engine = physics.createUnderwaterEngine();
 
 document.addEventListener('click', handleFishDrop);
 document.addEventListener('keydown', (event) => controls.handleKeyPress(event));
@@ -71,7 +70,7 @@ const render = Render.create({
     },
 });
 
-const loseBoundary = 450;
+const loseBoundary = 150;
 // Attach an event listener to the renderer for drawing the line
 Matter.Events.on(render, "afterRender", function () {
     const context = render.context; // Get the context from the renderer
