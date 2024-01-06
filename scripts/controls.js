@@ -80,6 +80,8 @@ export function addMergedFish(position, fishClass) {
     World.add(engine.world, newFish.getBody());
     Matter.Body.setStatic(newFish.getBody(), false);
 
+    allowInput = true;
+
     const fishBody = newFish.getBody();
     fishBody.owner = newFish;
     
