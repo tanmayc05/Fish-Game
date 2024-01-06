@@ -35,3 +35,37 @@
     width: 350px;
     height: 500px;
 }
+
+#game-over-screen {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.8);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    z-index: 3; /* Place it above the points text */
+}
+
+#game-over-message {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+#restart-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    font-size: 18px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+}
+
+#restart-button:hover {
+    background-color: #45a049;
+}

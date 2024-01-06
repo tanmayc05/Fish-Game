@@ -72,7 +72,7 @@ const render = Render.create({
     },
 });
 
-const loseBoundary = 150;
+const loseBoundary = 450;
 // Attach an event listener to the renderer for drawing the line
 Matter.Events.on(render, "afterRender", function () {
     const context = render.context; // Get the context from the renderer
@@ -97,10 +97,14 @@ const wallOptions = {
 };
 const wallThickness = 10;
 
+export const ground = Bodies.rectangle(WIDTH / 2, HEIGHT, WIDTH, wallThickness, wallOptions);
+export const rightWall = Bodies.rectangle(WIDTH+(wallThickness/2), HEIGHT / 2, wallThickness, HEIGHT, wallOptions);
+export const leftWall = Bodies.rectangle(-wallThickness/2, HEIGHT / 2, wallThickness, HEIGHT, wallOptions);
+
 Matter.World.add(engine.world, [
-    Bodies.rectangle(WIDTH / 2, HEIGHT, WIDTH, wallThickness, wallOptions), // bottom
-    Bodies.rectangle(0, HEIGHT / 2, wallThickness, HEIGHT, wallOptions), // left
-    Bodies.rectangle(WIDTH, HEIGHT / 2, wallThickness, HEIGHT, wallOptions), // right
+    ground, // bottom
+    leftWall, // left
+    rightWall, // right
 ]);
 
 // Attach an event listener to draw the line
@@ -112,21 +116,23 @@ Render.run(render);
 const runner = Runner.create();
 Runner.run(runner, engine);
 
-function gameLoop() {
+export function gameLoop() {
     Runner.tick(runner, engine);
     Render.world(render);
 
     if (isCanvasFilled()) {
         console.log("Game Over");
-        prompt("boZO!");
+        controls.gameOver();
+        //requestAnimationFrame(gameLoop);
+        //prompt("boZO!");
         return;
     }
 
-    requestAnimationFrame(gameLoop);
+    requestAnimationFrame(gameLoop);    
 }
 
 function isCanvasFilled() {
-    let fruitSettledAboveLine = false;
+    let fishSettledAboveLine = false;
     let canvasFilledBelowLine = true;
 
     engine.world.bodies.forEach((body) => {
@@ -138,7 +144,7 @@ function isCanvasFilled() {
                 Matter.Vector.magnitude(body.velocity) < 0.1 &&
                 Math.abs(body.angularVelocity) < 0.1
             ) {
-                fruitSettledAboveLine = true;
+                fishSettledAboveLine = true;
             }
 
             // Check if the fruit is below the line and moving
@@ -151,12 +157,11 @@ function isCanvasFilled() {
             }
         }
     });
-
-    return fruitSettledAboveLine && canvasFilledBelowLine;
+    return fishSettledAboveLine && canvasFilledBelowLine;
 }
 
 gameLoop();
 
 function handleFishDrop(event) {
-    controls.dropFish(event, engine);
+    controls.dropFish(engine);
 }
