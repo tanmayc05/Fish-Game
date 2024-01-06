@@ -73,16 +73,21 @@ const render = Render.create({
 });
 
 const loseBoundary = 150;
+const lineBoundary = loseBoundary + 75;
+let lineDrawn = false;
 // Attach an event listener to the renderer for drawing the line
 Matter.Events.on(render, "afterRender", function () {
-    const context = render.context; // Get the context from the renderer
-    context.beginPath();
-    context.moveTo(0, loseBoundary); // Start of the line at the left edge
-    context.lineTo(render.options.width, loseBoundary); // End of the line at the right edge
-    context.strokeStyle = "red"; // Set the line color
-    context.lineWidth = 1; // Set the line thickness
-    context.stroke(); // Draw the line
+    if (lineDrawn) {
+        const context = render.context;
+        context.beginPath();
+        context.moveTo(0, loseBoundary);
+        context.lineTo(render.options.width, loseBoundary);
+        context.strokeStyle = "red";
+        context.lineWidth = 1;
+        context.stroke();
+    }
 });
+
 
 export const WIDTH = render.options.width;
 const HEIGHT = render.options.height;
@@ -121,10 +126,16 @@ export function gameLoop() {
     Runner.tick(runner, engine, delta);
     Render.world(render);
 
-    if (isCanvasFilled()) {
+    const result = isCanvasFilled();
+
+    if (result.zeGameOver) {
         console.log("Game Over");
         controls.gameOver();
         return;
+    }
+
+    if (result.shouldDrawLine) {
+        drawLoseBoundaryLine(render); // Draw the line
     }
 
     requestAnimationFrame(gameLoop);    
@@ -133,11 +144,14 @@ export function gameLoop() {
 function isCanvasFilled() {
     let fishSettledAboveLine = false;
     let canvasFilledBelowLine = true;
+    let drawLineSettled = false;
+    let canvasFilledDrawLine = true;
 
     engine.world.bodies.forEach((body) => {
         if (body.owner instanceof Fish && !body.isStatic) {
             const bottomOfFruit = body.position.y + body.circleRadius;
-            // Check if the fruit has settled above the line
+
+            // Check if the fish has settled above the lose boundary
             if (
                 bottomOfFruit < loseBoundary &&
                 Matter.Vector.magnitude(body.velocity) < 0.1 &&
@@ -146,7 +160,7 @@ function isCanvasFilled() {
                 fishSettledAboveLine = true;
             }
 
-            // Check if the fruit is below the line and moving
+            // Check if the fish is below the lose boundary and moving
             if (
                 bottomOfFruit >= loseBoundary &&
                 (Matter.Vector.magnitude(body.velocity) > 0.25 ||
@@ -154,10 +168,40 @@ function isCanvasFilled() {
             ) {
                 canvasFilledBelowLine = false;
             }
+
+            const fruitPos = body.position.y;
+
+
+            // Check if the fish has settled above the line boundary
+            if (
+                fruitPos < lineBoundary &&
+                Matter.Vector.magnitude(body.velocity) < 0.1 &&
+                Math.abs(body.angularVelocity) < 0.1
+            ) {
+                drawLineSettled = true;
+            }
+
+            // Check if the fish is below the line boundary and moving
+            if (
+                fruitPos >= lineBoundary &&
+                (Matter.Vector.magnitude(body.velocity) > 0.25 ||
+                    Math.abs(body.angularVelocity) > 0.25)
+            ) {
+                canvasFilledDrawLine = false;
+            }
         }
     });
-    return fishSettledAboveLine && canvasFilledBelowLine;
+
+    return {
+        zeGameOver: fishSettledAboveLine && canvasFilledBelowLine,
+        shouldDrawLine : drawLineSettled && canvasFilledDrawLine
+    };
 }
+
+function drawLoseBoundaryLine() {
+        lineDrawn = true; // Set the flag to true after drawing the line
+}
+
 
 gameLoop();
 
