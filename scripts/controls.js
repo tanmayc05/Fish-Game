@@ -192,13 +192,12 @@ export function gameOver() {
     //remove ground
     Matter.World.remove(engine.world, ground);
     gameOverScreen.style.display = "block";
-    restartButton.addEventListener("click", function(event) {
-        event.stopPropagation(); // Prevents the event from propagating further
-        resetGame();
-    });
 }
 
 export function resetGame() {
+    // Remove the existing event listener from the restart button
+    restartButton.removeEventListener("click", restartButtonClickHandler);
+
     Matter.World.clear(engine.world);
 
     Matter.World.add(engine.world, [
@@ -215,6 +214,17 @@ export function resetGame() {
     // Hide the game over screen
     gameOverScreen.style.display = "none";
 
+    // Add the event listener to the restart button
+    restartButton.addEventListener("click", restartButtonClickHandler);
+
     // Start the game loop again
     requestAnimationFrame(gameLoop);
 }
+
+function restartButtonClickHandler(event) {
+    event.stopPropagation(); // Prevents the event from propagating further
+    resetGame();
+}
+
+// Add the initial event listener to the restart button
+restartButton.addEventListener("click", restartButtonClickHandler);
