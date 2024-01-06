@@ -60,7 +60,7 @@ function initializePointsText() {
 const pointsText = initializePointsText();
 
 export function addFishToDrop(position) {
-    console.log("addFishToDrop");
+    //console.log("addFishToDrop");
     const randomFishClass = fishClasses[Math.floor(Math.random() * fishClasses.length)];
     const newFish = new randomFishClass(position);
     World.add(engine.world, newFish.getBody());
@@ -160,7 +160,7 @@ export function handleKeyPress(event) {
 
 export function dropFish(event) {
     if (followFish && allowInput && !isGameOver) {
-        console.log("dropFish");
+        //console.log("dropFish");
         dropping = true;
         Matter.Body.setStatic(followFish.getBody(), false);
 
