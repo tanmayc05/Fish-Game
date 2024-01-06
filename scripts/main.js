@@ -9,10 +9,11 @@ const Render = Matter.Render,
     Bodies = Matter.Bodies,
     Runner = Matter.Runner;
 
-const engine = physics.createUnderwaterEngine();
+export const engine = physics.createUnderwaterEngine();
+controls.initializeControls(engine);
 
 document.addEventListener('click', handleFishDrop);
-document.addEventListener('keydown', controls.handleKeyPress);
+document.addEventListener('keydown', (event) => controls.handleKeyPress(event, engine));
 document.addEventListener('mousemove', controls.handleMouseMove);
 document.addEventListener('DOMContentLoaded', function () {
     Matter.Events.on(engine, 'collisionStart', function (event) {

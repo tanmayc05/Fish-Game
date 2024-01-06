@@ -9,6 +9,7 @@ let followFish = null;
 let dropping = false;
 let allowInput = true;
 let playerPoints = 0;
+let engine;
 
 const fishClasses = [
     fish.FishEgg,
@@ -137,7 +138,7 @@ export function handleMouseMove(event) {
     }
 }
 
-export function handleKeyPress(event) {
+export function handleKeyPress(event, engine) {
     if (!allowInput) {
         return;
     }
@@ -158,7 +159,7 @@ export function handleKeyPress(event) {
 }
 
 export function dropFish(event, engine) {
-    if (followFish && allowInput) {
+    if (followFish && allowInput && !dropping) {
         dropping = true;
         Matter.Body.setStatic(followFish.getBody(), false);
 
