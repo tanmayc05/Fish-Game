@@ -125,7 +125,7 @@ export function handleMouseMove(event) {
     
         if (newX - (followFish.getRadius()) < 0 || newX + (followFish.getRadius()) > WIDTH) {
             // Bring the fish back within bounds
-            const boundedX = Math.max(followFish.getRadius() + 2, Math.min(newX, WIDTH - followFish.getRadius() - 2));
+            const boundedX = Math.max(followFish.getRadius(), Math.min(newX, WIDTH - followFish.getRadius()));
             Matter.Body.setPosition(followFish.getBody(), { x: boundedX, y: followFish.getBody().position.y });
         } else {
             // Fish is within bounds, move normally
