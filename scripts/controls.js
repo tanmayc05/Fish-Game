@@ -44,6 +44,7 @@ function initializePointsText() {
     const pointsText = document.createElement('div');
     pointsText.id = 'points-text';
     pointsText.textContent = playerPoints;
+    pointsText.style.fontFamily = "'Amaranth', sans-serif";
 
     const pointsBackground = document.createElement('div');
     pointsBackground.id = 'points-background';
