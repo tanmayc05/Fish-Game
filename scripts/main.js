@@ -128,7 +128,7 @@ export function gameLoop() {
 
     const result = isCanvasFilled();
 
-    if (result.zeGameOver) {
+    if (result.isGameOver) {
         console.log("Game Over");
         controls.gameOver();
         return;
@@ -191,11 +191,10 @@ function isCanvasFilled() {
                     fishTimeouts.delete(fish);
                 }
             }
-
             const fruitPos = body.position.y;
 
 
-            // Check if the fish has settled above the line boundary
+            // Check if the fish has settled above the lose boundary
             if (
                 fruitPos < lineBoundary &&
                 Matter.Vector.magnitude(body.velocity) < 0.1 &&
@@ -205,9 +204,8 @@ function isCanvasFilled() {
             }
         }
     });
-
     return {
-        zeGameOver: fishSettledAboveLine && canvasFilledBelowLine,
+        isGameOver: fishSettledAboveLine && canvasFilledBelowLine,
         shouldDrawLine : drawLineSettled && canvasFilledDrawLine
     };
 }
