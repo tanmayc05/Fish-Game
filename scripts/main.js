@@ -128,7 +128,7 @@ export function gameLoop() {
 
     const result = isCanvasFilled();
 
-    if (result.zeGameOver) {
+    if (result.isGameOver) {
         console.log("Game Over");
         controls.gameOver();
         return;
@@ -168,11 +168,6 @@ function isCanvasFilled() {
             ) {
                 canvasFilledBelowLine = false;
             }
-        }
-    });
-
-    engine.world.bodies.forEach((body) => {
-        if (body.owner instanceof Fish && !body.isStatic) {
             const fruitPos = body.position.y;
 
 
@@ -186,9 +181,8 @@ function isCanvasFilled() {
             }
         }
     });
-
     return {
-        zeGameOver: fishSettledAboveLine && canvasFilledBelowLine,
+        isGameOver: fishSettledAboveLine && canvasFilledBelowLine,
         shouldDrawLine : drawLineSettled && canvasFilledDrawLine
     };
 }
