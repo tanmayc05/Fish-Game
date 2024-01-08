@@ -72,7 +72,7 @@ const render = Render.create({
     },
 });
 
-const loseBoundary = 150;
+const loseBoundary = 500;
 const lineBoundary = loseBoundary + 75;
 let lineDrawn = false;
 // Attach an event listener to the renderer for drawing the line
@@ -121,6 +121,11 @@ Render.run(render);
 const runner = Runner.create();
 Runner.run(runner, engine);
 
+let fishSettledAboveLine = false;
+    let canvasFilledBelowLine = true;
+    let drawLineSettled = false;
+    let canvasFilledDrawLine = true;
+
 export function gameLoop() {
     const delta = 16; // Fixed timestep of 16 milliseconds (60 FPS)
     Runner.tick(runner, engine, delta);
@@ -131,6 +136,9 @@ export function gameLoop() {
     if (result.isGameOver) {
         console.log("Game Over");
         controls.gameOver();
+        fishSettledAboveLine = false;
+        canvasFilledBelowLine = true;
+        drawLineSettled = false;
         return;
     }
 
@@ -144,11 +152,6 @@ export function gameLoop() {
 const fishTimeouts = new Map(); // Map to store timeouts for each fish
 
 function isCanvasFilled() {
-    let fishSettledAboveLine = false;
-    let canvasFilledBelowLine = true;
-    let drawLineSettled = false;
-    let canvasFilledDrawLine = true;
-
     engine.world.bodies.forEach((body) => {
         if (body.owner instanceof Fish && !body.isStatic) {
             const fish = body.owner;
@@ -171,11 +174,10 @@ function isCanvasFilled() {
                             console.log("Game Over");
                             controls.gameOver();
                         }
-                    }, 1500);
+                    }, 1000);
                     fishTimeouts.set(fish, timeout);
                 }
             }
-
 
             // Check if the fish is below the lose boundary and moving
             if (
@@ -191,9 +193,8 @@ function isCanvasFilled() {
                     fishTimeouts.delete(fish);
                 }
             }
+
             const fruitPos = body.position.y;
-
-
             // Check if the fish has settled above the lose boundary
             if (
                 fruitPos < lineBoundary &&
