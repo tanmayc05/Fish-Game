@@ -115,11 +115,10 @@ export var background = Bodies.rectangle(WIDTH/2, HEIGHT/2, 1, 1, {
     isSensor: true,
     render: {
         sprite: {
-            texture: "assets/other/background.png",
+            texture: "assets/other/oceanBackground.png",
             xScale: 0.75,
             yScale: 0.75,
         },
-        zIndex: -3,
     }
     
 });
@@ -148,12 +147,10 @@ export function gameLoop() {
     const result = isCanvasFilled();
 
     if (result.isGameOver) {
-        console.log("Game Over");
         fishSettledAboveLine = false;
         canvasFilledBelowLine = true;
         drawLineSettled = false;
         canvasFilledDrawLine = true;
-        controls.gameOver();
         return;
     }
 

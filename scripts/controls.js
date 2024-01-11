@@ -1,7 +1,7 @@
 "use strict";
 
 import * as fish from "./fish.js";
-import { WIDTH, engine } from "./main.js";
+import { WIDTH, engine} from "./main.js";
 import {defaultStartingPositionY} from "./fish.js";
 import {ground, rightWall, leftWall, gameLoop, background}from "./main.js";
 
