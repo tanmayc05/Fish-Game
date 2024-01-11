@@ -2,6 +2,7 @@
 
 import * as fish from "./fish.js";
 import { WIDTH, engine } from "./main.js";
+import {defaultStartingPositionY} from "./fish.js";
 import {ground, rightWall, leftWall, gameLoop }from "./main.js";
 
 const gameOverScreen = document.getElementById('game-over-screen');
@@ -25,16 +26,15 @@ const fishClasses = [
 
 const fishPoints = {
     FishEgg: 1,
-    Minnow: 2,
-    Clownfish: 4,
-    MoorishIdol: 8,
-    Otter: 16,
-    Turtle: 32,
-    Manatee: 64,
-    Dolphin: 128,
-    Shark: 256,
-    Orca: 512,
-    Whale: 1024
+    Minnow: 3,
+    Clownfish: 6,
+    MoorishIdol: 10,
+    Otter: 15,
+    Turtle: 21,
+    Manatee: 28,
+    Dolphin: 36,
+    Shark: 45,
+    Orca: 55
 };
 
 function initializePointsText() {
@@ -60,10 +60,14 @@ function initializePointsText() {
 
 const pointsText = initializePointsText();
 
-export function addFishToDrop(position) {
-    console.log("addFishToDrop");
+export function addFishToDrop(event, position) {
+    //console.log("addFishToDrop");
     const randomFishClass = fishClasses[Math.floor(Math.random() * fishClasses.length)];
     const newFish = new randomFishClass(position);
+    if (event){
+        const mouseX = event.clientX;
+        Matter.Body.setPosition(newFish.getBody(), { x: mouseX, y: defaultStartingPositionY});
+    }
     World.add(engine.world, newFish.getBody());
     Matter.Body.setStatic(newFish.getBody(), true);
     const fishBody = newFish.getBody();
@@ -163,7 +167,7 @@ export function handleKeyPress(event) {
 
 export function dropFish(event) {
     if (followFish && allowInput && !isGameOver) {
-        console.log("dropFish");
+        //console.log("dropFish");
         dropping = true;
         Matter.Body.setStatic(followFish.getBody(), false);
 
@@ -180,7 +184,7 @@ export function dropFish(event) {
         });
 
         promise.then(() => {
-            followFish = addFishToDrop();
+            followFish = addFishToDrop(event);
         });
 
         // Re-enable user input after the delay
@@ -195,10 +199,12 @@ export function gameOver() {
     //remove ground
     Matter.World.remove(engine.world, ground);
     gameOverScreen.style.display = "block";
-    restartButton.addEventListener("click", resetGame);
 }
 
 export function resetGame() {
+    // Remove the existing event listener from the restart button
+    restartButton.removeEventListener("click", restartButtonClickHandler);
+
     Matter.World.clear(engine.world);
 
     Matter.World.add(engine.world, [
@@ -215,6 +221,17 @@ export function resetGame() {
     // Hide the game over screen
     gameOverScreen.style.display = "none";
 
+    // Add the event listener to the restart button
+    restartButton.addEventListener("click", restartButtonClickHandler);
+
     // Start the game loop again
     requestAnimationFrame(gameLoop);
 }
+
+function restartButtonClickHandler(event) {
+    event.stopPropagation(); // Prevents the event from propagating further
+    resetGame();
+}
+
+// Add the initial event listener to the restart button
+restartButton.addEventListener("click", restartButtonClickHandler);

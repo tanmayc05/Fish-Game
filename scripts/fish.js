@@ -2,7 +2,7 @@
 
 import { WIDTH } from "./main.js";
 
-const defaultStartingPositionY = 100;
+export const defaultStartingPositionY = 100;
 
 export class Fish {
     #name;

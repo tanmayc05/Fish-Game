@@ -73,16 +73,21 @@ const render = Render.create({
 });
 
 const loseBoundary = 150;
+const lineBoundary = loseBoundary + 75;
+let lineDrawn = false;
 // Attach an event listener to the renderer for drawing the line
 Matter.Events.on(render, "afterRender", function () {
-    const context = render.context; // Get the context from the renderer
-    context.beginPath();
-    context.moveTo(0, loseBoundary); // Start of the line at the left edge
-    context.lineTo(render.options.width, loseBoundary); // End of the line at the right edge
-    context.strokeStyle = "red"; // Set the line color
-    context.lineWidth = 1; // Set the line thickness
-    context.stroke(); // Draw the line
+    if (lineDrawn) {
+        const context = render.context;
+        context.beginPath();
+        context.moveTo(0, loseBoundary);
+        context.lineTo(render.options.width, loseBoundary);
+        context.strokeStyle = "red";
+        context.lineWidth = 1;
+        context.stroke();
+    }
 });
+
 
 export const WIDTH = render.options.width;
 const HEIGHT = render.options.height;
@@ -121,46 +126,97 @@ export function gameLoop() {
     Runner.tick(runner, engine, delta);
     Render.world(render);
 
-    if (isCanvasFilled()) {
+    const result = isCanvasFilled();
+
+    if (result.isGameOver) {
         console.log("Game Over");
         controls.gameOver();
         return;
     }
 
+    if (result.shouldDrawLine) {
+        drawLoseBoundaryLine(render); // Draw the line
+    }
+
     requestAnimationFrame(gameLoop);    
 }
+
+const fishTimeouts = new Map(); // Map to store timeouts for each fish
 
 function isCanvasFilled() {
     let fishSettledAboveLine = false;
     let canvasFilledBelowLine = true;
+    let drawLineSettled = false;
+    let canvasFilledDrawLine = true;
 
     engine.world.bodies.forEach((body) => {
         if (body.owner instanceof Fish && !body.isStatic) {
-            const bottomOfFruit = body.position.y + body.circleRadius;
-            // Check if the fruit has settled above the line
+            const fish = body.owner;
+            const bottomOfFish = body.position.y + body.circleRadius;
+
+            // Check if the fish has settled above the line
             if (
-                bottomOfFruit < loseBoundary &&
+                bottomOfFish < loseBoundary &&
                 Matter.Vector.magnitude(body.velocity) < 0.1 &&
                 Math.abs(body.angularVelocity) < 0.1
             ) {
-                fishSettledAboveLine = true;
+                if (!fishTimeouts.has(fish)) {
+                    // If the fish is settled above the line for the first time, set a timeout
+                    const timeout = setTimeout(() => {
+                        fishSettledAboveLine = true;
+                        // Remove the fish from the timeout map
+                        fishTimeouts.delete(fish);
+                        // Check if all fish are settled above the line
+                        if ([...fishTimeouts.values()].length === 0 && canvasFilledBelowLine) {
+                            console.log("Game Over");
+                            controls.gameOver();
+                        }
+                    }, 1500);
+                    fishTimeouts.set(fish, timeout);
+                }
             }
 
-            // Check if the fruit is below the line and moving
+
+            // Check if the fish is below the lose boundary and moving
             if (
-                bottomOfFruit >= loseBoundary &&
+                bottomOfFish >= loseBoundary &&
                 (Matter.Vector.magnitude(body.velocity) > 0.25 ||
                     Math.abs(body.angularVelocity) > 0.25)
             ) {
                 canvasFilledBelowLine = false;
+                // If the fish goes below the line, clear its timeout
+                const timeout = fishTimeouts.get(fish);
+                if (timeout) {
+                    clearTimeout(timeout);
+                    fishTimeouts.delete(fish);
+                }
+            }
+            const fruitPos = body.position.y;
+
+
+            // Check if the fish has settled above the lose boundary
+            if (
+                fruitPos < lineBoundary &&
+                Matter.Vector.magnitude(body.velocity) < 0.1 &&
+                Math.abs(body.angularVelocity) < 0.1
+            ) {
+                drawLineSettled = true;
             }
         }
     });
-    return fishSettledAboveLine && canvasFilledBelowLine;
+    return {
+        isGameOver: fishSettledAboveLine && canvasFilledBelowLine,
+        shouldDrawLine : drawLineSettled && canvasFilledDrawLine
+    };
 }
+
+function drawLoseBoundaryLine() {
+        lineDrawn = true; // Set the flag to true after drawing the line
+}
+
 
 gameLoop();
 
 function handleFishDrop(event) {
-    controls.dropFish();
+    controls.dropFish(event);
 }
