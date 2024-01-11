@@ -71,7 +71,7 @@ const render = Render.create({
     },
 });
 
-const loseBoundary = 150;
+const loseBoundary = 500;
 const lineBoundary = loseBoundary + 75;
 let lineDrawn = false;
 // Attach an event listener to the renderer for drawing the line
@@ -193,7 +193,7 @@ function isCanvasFilled() {
                             console.log("Game Over");
                             controls.gameOver();
                         }
-                    }, 1500);
+                    }, 1000);
                     fishTimeouts.set(fish, timeout);
                 }
             }

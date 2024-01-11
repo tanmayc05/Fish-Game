@@ -10,30 +10,31 @@ body {
     top: 5px; /* Adjust the top margin as needed */
     left: 50%;
     transform: translateX(-50%);
+    background-color: 'black';
     z-index: 1; /* Place it on top of the points background */
 }
 
 #points-text {
-    color: black;
+    color: white;
     font-size: 24px;
     font-family: Arial, sans-serif;
     width: 150px; /* Set the width as needed */
     padding: 5px; /* Adjust padding for better spacing */
     text-align: center; /* Center the text within the container */
-    border: 2px solid black; /* Add a white border */
     border-radius: 8px; /* Add rounded corners to the border */
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); /* 3D effect using box-shadow */
-    z-index: 2; /* Place it on top of the points background */
 }
 
 #points-background {
     position: absolute;
-    background-image: 'assets/other/wood.png';
+    background-image: url("../assets/other/points_wood.png");
+    background-size: cover;
+    border-radius: 8px;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1; /* Place it behind the text */
+    z-index: -1;
 }
 
 
@@ -54,7 +55,8 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    background-color: rgba(0, 0, 0, 0.8);
+    background-image: url("../assets/other/gameover_wood.png");
+    background-size: cover;
     padding: 20px;
     border-radius: 10px;
     color: white;
