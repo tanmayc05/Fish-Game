@@ -44,6 +44,7 @@ function initializePointsText() {
     const pointsText = document.createElement('div');
     pointsText.id = 'points-text';
     pointsText.textContent = playerPoints;
+    pointsText.style.fontFamily = "'Amaranth', sans-serif";
 
     const pointsBackground = document.createElement('div');
     pointsBackground.id = 'points-background';
@@ -82,6 +83,8 @@ export function addMergedFish(position, fishClass) {
     const newFish = new fishClass(position);
     World.add(engine.world, newFish.getBody());
     Matter.Body.setStatic(newFish.getBody(), false);
+
+    allowInput = true;
 
     const fishBody = newFish.getBody();
     fishBody.owner = newFish;
