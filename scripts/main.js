@@ -92,19 +92,30 @@ Matter.Events.on(render, "afterRender", function () {
 export const WIDTH = render.options.width;
 const HEIGHT = render.options.height;
 
+const groundOptions = {
+    isStatic: true,
+    render: {
+        lineWidth: 10,
+        sprite: {
+            texture: "assets/other/sand.png",
+            xScale: 0.1,
+            yScale: 0.075,
+        },
+    },
+};
 const wallOptions = {
     isStatic: true,
     render: {
-        fillStyle: "#0077BE",
         strokeStyle: "#0077BE",
+        fillStyle: "#0077BE",
         lineWidth: 10,
-    },
+        }
 };
 const wallThickness = 10;
 
-export const ground = Bodies.rectangle(WIDTH / 2, HEIGHT, WIDTH, wallThickness, wallOptions);
-export const rightWall = Bodies.rectangle(WIDTH+(wallThickness/2), HEIGHT / 2, wallThickness, HEIGHT, wallOptions);
-export const leftWall = Bodies.rectangle(-wallThickness/2, HEIGHT / 2, wallThickness, HEIGHT, wallOptions);
+export const ground = Bodies.rectangle(WIDTH / 2, HEIGHT, WIDTH, wallThickness, groundOptions);
+export const rightWall = Bodies.rectangle(WIDTH+(wallThickness/2) + 5, HEIGHT / 2, wallThickness, HEIGHT, wallOptions);
+export const leftWall = Bodies.rectangle(-wallThickness/2 - 5, HEIGHT / 2, wallThickness, HEIGHT, wallOptions);
 
 Matter.World.add(engine.world, [
     ground, // bottom

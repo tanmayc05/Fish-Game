@@ -45,6 +45,8 @@ export class FishEgg extends Fish {
             render: {
                 sprite: {
                     texture: imagePath,
+                    xScale: 0.01,
+                    yScale: 0.01,
                 },
             },
         });
