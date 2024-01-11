@@ -9,13 +9,13 @@
 }
 
 #points-text {
-    color: white;
+    color: black;
     font-size: 24px;
     font-family: Arial, sans-serif;
     width: 150px; /* Set the width as needed */
     padding: 5px; /* Adjust padding for better spacing */
     text-align: center; /* Center the text within the container */
-    border: 2px solid white; /* Add a white border */
+    border: 2px solid black; /* Add a white border */
     border-radius: 8px; /* Add rounded corners to the border */
     box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); /* 3D effect using box-shadow */
     z-index: 2; /* Place it on top of the points background */
@@ -23,12 +23,12 @@
 
 #points-background {
     position: absolute;
+    background-image: 'assets/other/wood.png';
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #0077BE; /* Background color inside the border */
-    z-index: -1; /* Place it behind the text */
+    z-index: 1; /* Place it behind the text */
 }
 
 

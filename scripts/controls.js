@@ -3,7 +3,7 @@
 import * as fish from "./fish.js";
 import { WIDTH, engine } from "./main.js";
 import {defaultStartingPositionY} from "./fish.js";
-import {ground, rightWall, leftWall, gameLoop }from "./main.js";
+import {ground, rightWall, leftWall, gameLoop, background}from "./main.js";
 
 const gameOverScreen = document.getElementById('game-over-screen');
 const restartButton = document.getElementById('restart-button');
@@ -61,10 +61,8 @@ const pointsText = initializePointsText();
 
 export function addFishToDrop(event, position) {
     //console.log("addFishToDrop");
-    //const randomFishClass = fishClasses[Math.floor(Math.random() * fishClasses.length)];
-    //const newFish = new randomFishClass(position);
-    //only use fishegg for now to test
-    const newFish = new fish.FishEgg(position);
+    const randomFishClass = fishClasses[Math.floor(Math.random() * fishClasses.length)];
+    const newFish = new randomFishClass(position);
     if (event){
         const mouseX = event.clientX;
         Matter.Body.setPosition(newFish.getBody(), { x: mouseX, y: defaultStartingPositionY});
@@ -209,7 +207,9 @@ export function resetGame() {
     Matter.World.add(engine.world, [
         ground, // bottom
         leftWall, // left
-        rightWall // right
+        rightWall, // right
+        background
+        
     ]);
     addFishToDrop();
     

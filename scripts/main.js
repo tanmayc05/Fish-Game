@@ -66,7 +66,6 @@ const render = Render.create({
         width: 350,
         height: 500,
         wireframes: false,
-        background: "#0077BE",
         showAngleIndicator: false, 
         showCollisions: false, 
     },
@@ -96,11 +95,6 @@ const groundOptions = {
     isStatic: true,
     render: {
         lineWidth: 10,
-        sprite: {
-            texture: "assets/other/sand.png",
-            xScale: 0.1,
-            yScale: 0.075,
-        },
     },
 };
 const wallOptions = {
@@ -114,13 +108,27 @@ const wallOptions = {
 const wallThickness = 10;
 
 export const ground = Bodies.rectangle(WIDTH / 2, HEIGHT, WIDTH, wallThickness, groundOptions);
-export const rightWall = Bodies.rectangle(WIDTH+(wallThickness/2) + 5, HEIGHT / 2, wallThickness, HEIGHT, wallOptions);
-export const leftWall = Bodies.rectangle(-wallThickness/2 - 5, HEIGHT / 2, wallThickness, HEIGHT, wallOptions);
+export const rightWall = Bodies.rectangle(WIDTH+(wallThickness/2), HEIGHT / 2, wallThickness, HEIGHT, wallOptions);
+export const leftWall = Bodies.rectangle(-wallThickness/2, HEIGHT / 2, wallThickness, HEIGHT, wallOptions);
+export var background = Bodies.rectangle(WIDTH/2, HEIGHT/2, 1, 1, {
+    isStatic: true,
+    isSensor: true,
+    render: {
+        sprite: {
+            texture: "assets/other/background.png",
+            xScale: 0.75,
+            yScale: 0.75,
+        },
+        zIndex: -3,
+    }
+    
+});
 
 Matter.World.add(engine.world, [
     ground, // bottom
     leftWall, // left
     rightWall, // right
+    background
 ]);
 
 // Attach an event listener to draw the line
@@ -141,6 +149,10 @@ export function gameLoop() {
 
     if (result.isGameOver) {
         console.log("Game Over");
+        fishSettledAboveLine = false;
+        canvasFilledBelowLine = true;
+        drawLineSettled = false;
+        canvasFilledDrawLine = true;
         controls.gameOver();
         return;
     }
@@ -154,12 +166,11 @@ export function gameLoop() {
 
 const fishTimeouts = new Map(); // Map to store timeouts for each fish
 
+let fishSettledAboveLine = false;
+let canvasFilledBelowLine = true;
+let drawLineSettled = false;
+let canvasFilledDrawLine = true;
 function isCanvasFilled() {
-    let fishSettledAboveLine = false;
-    let canvasFilledBelowLine = true;
-    let drawLineSettled = false;
-    let canvasFilledDrawLine = true;
-
     engine.world.bodies.forEach((body) => {
         if (body.owner instanceof Fish && !body.isStatic) {
             const fish = body.owner;
