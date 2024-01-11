@@ -61,8 +61,10 @@ const pointsText = initializePointsText();
 
 export function addFishToDrop(event, position) {
     //console.log("addFishToDrop");
-    const randomFishClass = fishClasses[Math.floor(Math.random() * fishClasses.length)];
-    const newFish = new randomFishClass(position);
+    //const randomFishClass = fishClasses[Math.floor(Math.random() * fishClasses.length)];
+    //const newFish = new randomFishClass(position);
+    //only use fishegg for now to test
+    const newFish = new fish.FishEgg(position);
     if (event){
         const mouseX = event.clientX;
         Matter.Body.setPosition(newFish.getBody(), { x: mouseX, y: defaultStartingPositionY});
@@ -102,8 +104,8 @@ export function moveFish(direction) {
         ) {
             // Bring the fish back within bounds
             const boundedX = Math.max(
-                followFish.getRadius() + 2,
-                Math.min(newX, WIDTH - followFish.getRadius() - 2)
+                followFish.getRadius(),
+                Math.min(newX, WIDTH - followFish.getRadius())
             );
             Matter.Body.setPosition(followFish.getBody(), {
                 x: boundedX,
