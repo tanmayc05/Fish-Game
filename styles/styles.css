@@ -1,4 +1,9 @@
 @import url("https://cdn.jsdelivr.net/npm/css.gg/icons/icons.css");
+@import url('https://fonts.googleapis.com/css2?family=Amaranth:wght@400;700&display=swap');
+
+body {
+    font-family: 'Amaranth', sans-serif;
+}
 
 #points-text-container {
     position: absolute;
