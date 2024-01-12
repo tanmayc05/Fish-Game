@@ -71,7 +71,7 @@ const render = Render.create({
     },
 });
 
-const loseBoundary = 500;
+const loseBoundary = 475;
 const lineBoundary = loseBoundary + 75;
 let lineDrawn = false;
 // Attach an event listener to the renderer for drawing the line
@@ -147,10 +147,10 @@ export function gameLoop() {
     const result = isCanvasFilled();
 
     if (result.isGameOver) {
-        fishSettledAboveLine = false;
-        canvasFilledBelowLine = true;
+        controls.gameOver();
         drawLineSettled = false;
-        canvasFilledDrawLine = true;
+        lineDrawn = false;
+        fishSettledTimes.clear();
         return;
     }
 
@@ -161,12 +161,10 @@ export function gameLoop() {
     requestAnimationFrame(gameLoop);    
 }
 
-const fishTimeouts = new Map(); // Map to store timeouts for each fish
+const fishSettledTimes = new Map(); // Map to store timeouts for each fish
 
-let fishSettledAboveLine = false;
-let canvasFilledBelowLine = true;
+
 let drawLineSettled = false;
-let canvasFilledDrawLine = true;
 function isCanvasFilled() {
     engine.world.bodies.forEach((body) => {
         if (body.owner instanceof Fish && !body.isStatic) {
@@ -179,53 +177,32 @@ function isCanvasFilled() {
                 Matter.Vector.magnitude(body.velocity) < 0.1 &&
                 Math.abs(body.angularVelocity) < 0.1
             ) {
-                if (!fishTimeouts.has(fish)) {
-                    // If the fish is settled above the line for the first time, set a timeout
-                    const timeout = setTimeout(() => {
-                        fishSettledAboveLine = true;
-                        // Remove the fish from the timeout map
-                        fishTimeouts.delete(fish);
-                        // Check if all fish are settled above the line
-                        if ([...fishTimeouts.values()].length === 0 && canvasFilledBelowLine) {
-                            console.log("Game Over");
-                            controls.gameOver();
-                        }
-                    }, 1000);
-                    fishTimeouts.set(fish, timeout);
+                if (!fishSettledTimes.has(fish)) {
+                    // If the fish is settled above the line for the first time, record the timestamp
+                    fishSettledTimes.set(fish, Date.now());
                 }
-            }
-
-
-            // Check if the fish is below the lose boundary and moving
+            } 
             if (
-                bottomOfFish >= loseBoundary &&
-                (Matter.Vector.magnitude(body.velocity) > 0.25 ||
-                    Math.abs(body.angularVelocity) > 0.25)
-            ) {
-                canvasFilledBelowLine = false;
-                // If the fish goes below the line, clear its timeout
-                const timeout = fishTimeouts.get(fish);
-                if (timeout) {
-                    clearTimeout(timeout);
-                    fishTimeouts.delete(fish);
-                }
-            }
-            const fruitPos = body.position.y;
-
-
-            // Check if the fish has settled above the lose boundary
-            if (
-                fruitPos < lineBoundary &&
+                bottomOfFish < lineBoundary &&
                 Matter.Vector.magnitude(body.velocity) < 0.1 &&
                 Math.abs(body.angularVelocity) < 0.1
             ) {
                 drawLineSettled = true;
             }
+            else {
+                // If the fish is not above the line, remove it from the settled times map
+                fishSettledTimes.delete(fish);
+            }
         }
     });
+    const currentTime = Date.now();
+    const settledFish = [...fishSettledTimes.entries()].find(
+        ([, timestamp]) => currentTime - timestamp >= 1000
+    );
+
     return {
-        isGameOver: fishSettledAboveLine && canvasFilledBelowLine,
-        shouldDrawLine : drawLineSettled && canvasFilledDrawLine
+        isGameOver: settledFish !== undefined,
+        shouldDrawLine: drawLineSettled,
     };
 }
 
