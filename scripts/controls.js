@@ -61,7 +61,6 @@ function initializePointsText() {
 const pointsText = initializePointsText();
 
 export function addFishToDrop(event, position) {
-    //console.log("addFishToDrop");
     const randomFishClass = fishClasses[Math.floor(Math.random() * fishClasses.length)];
     const newFish = new randomFishClass(position);
     if (event){
