@@ -71,7 +71,7 @@ const render = Render.create({
     },
 });
 
-const loseBoundary = 475;
+const loseBoundary = 150;
 const lineBoundary = loseBoundary + 75;
 let lineDrawn = false;
 // Attach an event listener to the renderer for drawing the line
