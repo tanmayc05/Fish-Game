@@ -6,7 +6,6 @@ import * as controls from "./controls.js";
 import { isCanvasFilled, fishSettledTimes } from "./helpers.js";
 
 const Render = Matter.Render,
-    World = Matter.World,
     Bodies = Matter.Bodies,
     Runner = Matter.Runner;
 
@@ -56,9 +55,13 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
+
 const gameContainer = document.createElement('div');
 gameContainer.id = 'game-container';
 document.body.appendChild(gameContainer);
+
+export const settingsScreen = document.getElementById('settings-screen');
+export const settingsRestartButton = document.getElementById('settings-restart-button');
 
 const render = Render.create({
     element: gameContainer,
@@ -117,8 +120,8 @@ export var background = Bodies.rectangle(WIDTH/2, HEIGHT/2, 1, 1, {
     render: {
         sprite: {
             texture: "assets/other/oceanBackground.png",
-            xScale: 0.75,
-            yScale: 0.75,
+            xScale: 0.69,
+            yScale: 0.69,
         },
     }
     
@@ -131,16 +134,14 @@ Matter.World.add(engine.world, [
     background
 ]);
 
-// Attach an event listener to draw the line
-
 controls.addFishToDrop();
 
 Render.run(render);
-
 const runner = Runner.create();
 Runner.run(runner, engine);
 
 let drawLineSettled = false;
+let restart = false
 
 export function gameLoop() {
     const delta = 16; // Fixed timestep of 16 milliseconds (60 FPS)
@@ -157,18 +158,35 @@ export function gameLoop() {
         return;
     }
 
+    if (restart) {
+        restart = false;
+        return;
+    }
+
     if (result.shouldDrawLine) {
-        drawLoseBoundaryLine(); // Draw the line
+        drawLoseBoundaryLine();
     }
     requestAnimationFrame(gameLoop);    
 }
+gameLoop();
 
 function drawLoseBoundaryLine() {
     lineDrawn = true;
 }
 
-gameLoop();
-
 function handleFishDrop(event) {
-    controls.dropFish(event);
+    if (settingsScreen.style.display === "none") {
+        controls.dropFish(event);
+    }
+}
+
+export function showSettings() {
+    settingsScreen.style.display = "block";
+}
+
+settingsRestartButton.addEventListener("click", settingsRestartButtonClickHandler);
+export function settingsRestartButtonClickHandler(event) {
+    restart = true;
+    event.stopPropagation();
+    controls.resetGame();
 }

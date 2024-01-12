@@ -1,12 +1,13 @@
 "use strict";
 
 import * as fish from "./fish.js";
-import { WIDTH, engine} from "./main.js";
+import { WIDTH, engine, showSettings, settingsRestartButton, settingsScreen, settingsRestartButtonClickHandler} from "./main.js";
 import {defaultStartingPositionY} from "./fish.js";
 import {ground, rightWall, leftWall, gameLoop, background}from "./main.js";
 
 const gameOverScreen = document.getElementById('game-over-screen');
 const restartButton = document.getElementById('restart-button');
+
 
 var World = Matter.World;
 
@@ -34,7 +35,8 @@ const fishPoints = {
     Manatee: 28,
     Dolphin: 36,
     Shark: 45,
-    Orca: 55
+    Orca: 55,
+    Whale: 66,
 };
 
 function initializePointsText() {
@@ -44,7 +46,6 @@ function initializePointsText() {
     const pointsText = document.createElement('div');
     pointsText.id = 'points-text';
     pointsText.textContent = playerPoints;
-    pointsText.style.fontFamily = "'Amaranth', sans-serif";
 
     const pointsBackground = document.createElement('div');
     pointsBackground.id = 'points-background';
@@ -144,7 +145,7 @@ export function moveFish(direction) {
 
 
 export function handleMouseMove(event) {
-    if (followFish && !dropping && !isGameOver) {
+    if (settingsScreen.style.display === "none" && followFish && !dropping && !isGameOver) {
         const mouseX = event.clientX;
         const fishX = followFish.getBody().position.x;
         const newX = Math.min(WIDTH - followFish.getRadius(), Math.max(followFish.getRadius(), mouseX));
@@ -152,11 +153,9 @@ export function handleMouseMove(event) {
         Matter.Body.setPosition(followFish.getBody(), { x: newX, y: followFish.getBody().position.y });
     
         if (newX - (followFish.getRadius()) < 0 || newX + (followFish.getRadius()) > WIDTH) {
-            // Bring the fish back within bounds
             const boundedX = Math.max(followFish.getRadius(), Math.min(newX, WIDTH - followFish.getRadius()));
             Matter.Body.setPosition(followFish.getBody(), { x: boundedX, y: followFish.getBody().position.y });
         } else {
-            // Fish is within bounds, move normally
             Matter.Body.setPosition(followFish.getBody(), {
                 x: newX,
                 y: followFish.getBody().position.y,
@@ -166,9 +165,8 @@ export function handleMouseMove(event) {
 }
 
 export function handleKeyPress(event) {
-    if (allowInput && !isGameOver) {
-        const keyCode = event.keyCode;
-
+    const keyCode = event.keyCode;
+    if (allowInput && !isGameOver && settingsScreen.style.display === "none") {
         // Left arrow key
         if (keyCode === 37) {
             moveFish("left");
@@ -180,6 +178,14 @@ export function handleKeyPress(event) {
         // Down arrow key
         else if (keyCode === 40 || keyCode == 32) {
             dropFish();
+        }
+    }
+    if (keyCode === 27) {
+        if (settingsScreen.style.display === "none") {
+            showSettings();
+        } else {
+            settingsScreen.style.display = "none";
+            engine.enabled = true;
         }
     }
 }
@@ -224,6 +230,7 @@ export function gameOver() {
 export function resetGame() {
     // Remove the existing event listener from the restart button
     restartButton.removeEventListener("click", restartButtonClickHandler);
+    settingsRestartButton.removeEventListener("click", restartButtonClickHandler);
 
     Matter.World.clear(engine.world);
 
@@ -242,18 +249,20 @@ export function resetGame() {
 
     // Hide the game over screen
     gameOverScreen.style.display = "none";
+    settingsScreen.style.display = "none";
 
     // Add the event listener to the restart button
     restartButton.addEventListener("click", restartButtonClickHandler);
+    settingsRestartButton.addEventListener("click", settingsRestartButtonClickHandler);
 
     // Start the game loop again
     requestAnimationFrame(gameLoop);
 }
 
-function restartButtonClickHandler(event) {
+export function restartButtonClickHandler(event) {
+    isGameOver = true;
     event.stopPropagation(); // Prevents the event from propagating further
     resetGame();
 }
 
-// Add the initial event listener to the restart button
 restartButton.addEventListener("click", restartButtonClickHandler);
