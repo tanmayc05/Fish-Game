@@ -157,7 +157,6 @@ export function gameLoop() {
     if (result.shouldDrawLine) {
         drawLoseBoundaryLine(render); // Draw the line
     }
-
     requestAnimationFrame(gameLoop);    
 }
 
@@ -177,6 +176,7 @@ function isCanvasFilled() {
                 Matter.Vector.magnitude(body.velocity) < 0.1 &&
                 Math.abs(body.angularVelocity) < 0.1
             ) {
+
                 if (!fishSettledTimes.has(fish)) {
                     // If the fish is settled above the line for the first time, record the timestamp
                     fishSettledTimes.set(fish, Date.now());
@@ -184,6 +184,7 @@ function isCanvasFilled() {
             } 
             if (
                 bottomOfFish < lineBoundary &&
+
                 Matter.Vector.magnitude(body.velocity) < 0.1 &&
                 Math.abs(body.angularVelocity) < 0.1
             ) {
