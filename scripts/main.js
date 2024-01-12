@@ -3,13 +3,14 @@
 import { Fish } from "./fish.js";
 import * as physics from "./physics.js";
 import * as controls from "./controls.js";
+import { isCanvasFilled, fishSettledTimes } from "./helpers.js";
 
 const Render = Matter.Render,
     World = Matter.World,
     Bodies = Matter.Bodies,
     Runner = Matter.Runner;
 
-export let engine = physics.createUnderwaterEngine();
+export let engine = physics.createEngine();
 
 document.addEventListener('click', handleFishDrop);
 document.addEventListener('keydown', (event) => controls.handleKeyPress(event));
@@ -139,12 +140,14 @@ Render.run(render);
 const runner = Runner.create();
 Runner.run(runner, engine);
 
+let drawLineSettled = false;
+
 export function gameLoop() {
     const delta = 16; // Fixed timestep of 16 milliseconds (60 FPS)
     Runner.tick(runner, engine, delta);
     Render.world(render);
 
-    const result = isCanvasFilled();
+    const result = isCanvasFilled(engine, loseBoundary, lineBoundary, drawLineSettled);
 
     if (result.isGameOver) {
         controls.gameOver();
@@ -155,62 +158,14 @@ export function gameLoop() {
     }
 
     if (result.shouldDrawLine) {
-        drawLoseBoundaryLine(render); // Draw the line
+        drawLoseBoundaryLine(); // Draw the line
     }
     requestAnimationFrame(gameLoop);    
 }
 
-const fishSettledTimes = new Map(); // Map to store timeouts for each fish
-
-
-let drawLineSettled = false;
-function isCanvasFilled() {
-    engine.world.bodies.forEach((body) => {
-        if (body.owner instanceof Fish && !body.isStatic) {
-            const fish = body.owner;
-            const bottomOfFish = body.position.y + body.circleRadius;
-
-            // Check if the fish has settled above the line
-            if (
-                bottomOfFish < loseBoundary &&
-                Matter.Vector.magnitude(body.velocity) < 0.1 &&
-                Math.abs(body.angularVelocity) < 0.1
-            ) {
-
-                if (!fishSettledTimes.has(fish)) {
-                    // If the fish is settled above the line for the first time, record the timestamp
-                    fishSettledTimes.set(fish, Date.now());
-                }
-            } 
-            if (
-                bottomOfFish < lineBoundary &&
-
-                Matter.Vector.magnitude(body.velocity) < 0.1 &&
-                Math.abs(body.angularVelocity) < 0.1
-            ) {
-                drawLineSettled = true;
-            }
-            else {
-                // If the fish is not above the line, remove it from the settled times map
-                fishSettledTimes.delete(fish);
-            }
-        }
-    });
-    const currentTime = Date.now();
-    const settledFish = [...fishSettledTimes.entries()].find(
-        ([, timestamp]) => currentTime - timestamp >= 1000
-    );
-
-    return {
-        isGameOver: settledFish !== undefined,
-        shouldDrawLine: drawLineSettled,
-    };
-}
-
 function drawLoseBoundaryLine() {
-        lineDrawn = true; // Set the flag to true after drawing the line
+    lineDrawn = true;
 }
-
 
 gameLoop();
 

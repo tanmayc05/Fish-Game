@@ -38,7 +38,7 @@ export class FishEgg extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Fish Egg";
         const imagePath = "assets/fishInspiration/fishEgg/fishEgg1.png";
-        const radius = 8;
+        const radius = 5;
         const body = Matter.Bodies.circle(position.x , position.y, radius, {
             restitution: 0.1, // bounciness
             friction: 0.00001, // friction against other objects
@@ -60,7 +60,7 @@ export class Minnow extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Minnow";
         const imagePath = "assets/fishInspiration/minnow/minnow1.png";
-        const radius = 13;
+        const radius = 10;
         const body = Matter.Bodies.circle(position.x , position.y, radius, {
             restitution: 0.1, // bounciness
             friction: 0.00001, // friction against other objects
@@ -82,7 +82,7 @@ export class Clownfish extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Clownfish";
         const imagePath = "assets/fishInspiration/clownFish/clownfish1.png";
-        const radius = 20;
+        const radius = 17;
         const body = Matter.Bodies.circle(position.x , position.y, radius, {
             restitution: 0.1, // bounciness
             friction: 0.00001, // friction against other objects
@@ -104,7 +104,7 @@ export class MoorishIdol extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Moorish Idol";
         const imagePath = "assets/fishInspiration/moorishIdol/mi3.png";
-        const radius = 30;
+        const radius = 22;
         const body = Matter.Bodies.circle(position.x , position.y, radius, {
             restitution: 0.1, // bounciness
             friction: 0.00001, // friction against other objects
@@ -126,7 +126,7 @@ export class Otter extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Otter";
         const imagePath = "assets/fishInspiration/seaOtter/otter1.png";
-        const radius = 40;
+        const radius = 30;
         const body = Matter.Bodies.circle(position.x , position.y, radius, {
             restitution: 0.1, // bounciness
             friction: 0.00001, // friction against other objects
@@ -148,7 +148,7 @@ export class Turtle extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Turtles";
         const imagePath = "assets/fishInspiration/turtle/turtle1.png";
-        const radius = 50;
+        const radius = 38;
         const body = Matter.Bodies.circle(position.x , position.y, radius, {
             restitution: 0.1, // bounciness
             friction: 0.00001, // friction against other objects
@@ -170,7 +170,7 @@ export class Manatee extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Manatee";
         const imagePath = "assets/fishInspiration/manatee/manatee2.png";
-        const radius = 60;
+        const radius = 46;
         const body = Matter.Bodies.circle(position.x , position.y, radius, {
             restitution: 0.1, // bounciness
             friction: 0.00001, // friction against other objects
@@ -192,7 +192,7 @@ export class Dolphin extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Dolphin";
         const imagePath = "assets/fishInspiration/dolphin/dolphin4.png";
-        const radius = 70;
+        const radius = 54;
         const body = Matter.Bodies.circle(position.x , position.y, radius, {
             restitution: 0.1, // bounciness
             friction: 0.00001, // friction against other objects
@@ -214,7 +214,7 @@ export class Shark extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Shark";
         const imagePath = "assets/fishInspiration/shark/shark1.png";
-        const radius = 80;
+        const radius = 62;
         const body = Matter.Bodies.circle(position.x , position.y, radius, {
             restitution: 0.1, // bounciness
             friction: 0.00001, // friction against other objects
@@ -236,7 +236,7 @@ export class Orca extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Orca";
         const imagePath = "assets/fishInspiration/orca/orca1.png";
-        const radius = 90;
+        const radius = 70;
         const body = Matter.Bodies.circle(position.x , position.y, radius, {
             restitution: 0.1, // bounciness
             friction: 0.00001, // friction against other objects
@@ -258,7 +258,7 @@ export class Whale extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Whale";
         const imagePath = "assets/fishInspiration/blueWhale/whale2.png";
-        const radius = 100;
+        const radius = 80;
         const body = Matter.Bodies.circle(position.x , position.y, radius, {
             restitution: 0.1, // bounciness
             render: {
