@@ -1,9 +1,9 @@
 "use strict";
 
 import * as fish from "./fish.js";
-import { WIDTH, engine } from "./main.js";
+import { WIDTH, engine} from "./main.js";
 import {defaultStartingPositionY} from "./fish.js";
-import {ground, rightWall, leftWall, gameLoop }from "./main.js";
+import {ground, rightWall, leftWall, gameLoop, background}from "./main.js";
 
 const gameOverScreen = document.getElementById('game-over-screen');
 const restartButton = document.getElementById('restart-button');
@@ -105,8 +105,8 @@ export function moveFish(direction) {
         ) {
             // Bring the fish back within bounds
             const boundedX = Math.max(
-                followFish.getRadius() + 2,
-                Math.min(newX, WIDTH - followFish.getRadius() - 2)
+                followFish.getRadius(),
+                Math.min(newX, WIDTH - followFish.getRadius())
             );
             Matter.Body.setPosition(followFish.getBody(), {
                 x: boundedX,
@@ -210,7 +210,9 @@ export function resetGame() {
     Matter.World.add(engine.world, [
         ground, // bottom
         leftWall, // left
-        rightWall // right
+        rightWall, // right
+        background
+        
     ]);
     addFishToDrop();
     
