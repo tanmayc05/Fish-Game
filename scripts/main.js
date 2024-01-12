@@ -139,11 +139,6 @@ Render.run(render);
 const runner = Runner.create();
 Runner.run(runner, engine);
 
-let fishSettledAboveLine = false;
-    let canvasFilledBelowLine = true;
-    let drawLineSettled = false;
-    let canvasFilledDrawLine = true;
-
 export function gameLoop() {
     const delta = 16; // Fixed timestep of 16 milliseconds (60 FPS)
     Runner.tick(runner, engine, delta);

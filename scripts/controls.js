@@ -60,6 +60,19 @@ function initializePointsText() {
 
 const pointsText = initializePointsText();
 
+export function zoomIn(body) {
+    const zoomFactor = 1.1;
+    let currentScale = body.render.sprite.xScale;
+    const zoomInterval = setInterval(() => {
+        if (currentScale < 1) {
+            Matter.Body.scale(body, zoomFactor, zoomFactor);
+            currentScale *= zoomFactor;
+        } else {
+            clearInterval(zoomInterval);
+        }
+    }, 2);
+}
+
 export function addFishToDrop(event, position) {
     const randomFishClass = fishClasses[Math.floor(Math.random() * fishClasses.length)];
     const newFish = new randomFishClass(position);
@@ -67,7 +80,11 @@ export function addFishToDrop(event, position) {
         const mouseX = event.clientX;
         Matter.Body.setPosition(newFish.getBody(), { x: mouseX, y: defaultStartingPositionY});
     }
+    Matter.Body.scale(newFish.getBody(), 0.1, 0.1);
     World.add(engine.world, newFish.getBody());
+
+    zoomIn(newFish.getBody(), 1);
+    
     Matter.Body.setStatic(newFish.getBody(), true);
     const fishBody = newFish.getBody();
     fishBody.owner = newFish;
@@ -80,7 +97,11 @@ export function addFishToDrop(event, position) {
 
 export function addMergedFish(position, fishClass) {
     const newFish = new fishClass(position);
+    Matter.Body.scale(newFish.getBody(), 0.1, 0.1);
     World.add(engine.world, newFish.getBody());
+
+    zoomIn(newFish.getBody(), 1);
+
     Matter.Body.setStatic(newFish.getBody(), false);
 
     allowInput = true;
