@@ -7,6 +7,7 @@ import {ground, rightWall, leftWall, gameLoop, background}from "./main.js";
 
 const gameOverScreen = document.getElementById('game-over-screen');
 const restartButton = document.getElementById('restart-button');
+const toggleMouseButton = document.getElementById('toggle-mouse-button');
 
 
 var World = Matter.World;
@@ -16,6 +17,7 @@ let dropping = false;
 let allowInput = true;
 let playerPoints = 0;
 let isGameOver = false;
+let mouseMoveAllowed = true;
 
 const fishClasses = [
     fish.FishEgg,
@@ -145,7 +147,7 @@ export function moveFish(direction) {
 
 
 export function handleMouseMove(event) {
-    if (settingsScreen.style.display === "none" && followFish && !dropping && !isGameOver) {
+    if (settingsScreen.style.display === "none" && followFish && !dropping && !isGameOver && mouseMoveAllowed) {
         const mouseX = event.clientX;
         const fishX = followFish.getBody().position.x;
         const newX = Math.min(WIDTH - followFish.getRadius(), Math.max(followFish.getRadius(), mouseX));
@@ -266,3 +268,13 @@ export function restartButtonClickHandler(event) {
 }
 
 restartButton.addEventListener("click", restartButtonClickHandler);
+toggleMouseButton.addEventListener("click", toggleMouseButtonClickHandler);
+
+function toggleMouseButtonClickHandler(event) {
+    mouseMoveAllowed = !mouseMoveAllowed;
+    if (mouseMoveAllowed) {
+        toggleMouseButton.textContent = "Disable Mouse";
+    } else {
+        toggleMouseButton.textContent = "Enable Mouse";
+    }
+}
