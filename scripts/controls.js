@@ -61,13 +61,13 @@ function initializePointsText() {
 
 const pointsText = initializePointsText();
 
-export function zoomIn(body) {
+export function zoomIn(body, targetScale) {
     const zoomFactor = 1.1;
     let currentScale = body.render.sprite.xScale;
     const zoomInterval = setInterval(() => {
-        if (currentScale < 1) {
-            Matter.Body.scale(body, zoomFactor, zoomFactor);
+        if (currentScale < targetScale) {
             currentScale *= zoomFactor;
+            Matter.Body.scale(body, zoomFactor, zoomFactor);
         } else {
             clearInterval(zoomInterval);
         }
@@ -81,6 +81,7 @@ export function addFishToDrop(event, position) {
         const mouseX = event.clientX;
         Matter.Body.setPosition(newFish.getBody(), { x: mouseX, y: defaultStartingPositionY});
     }
+    //const newFish = new fish.FishEgg(position)
     Matter.Body.scale(newFish.getBody(), 0.1, 0.1);
     World.add(engine.world, newFish.getBody());
 
@@ -200,7 +201,7 @@ export function dropFish(event) {
         // Disable user input during the delay
         allowInput = false;
 
-        const delay = 500;
+        const delay = 600;
 
         // Use a Promise to ensure proper sequencing
         const promise = new Promise((resolve) => {
