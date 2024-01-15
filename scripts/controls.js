@@ -7,6 +7,7 @@ import {ground, rightWall, leftWall, gameLoop, background}from "./main.js";
 
 const gameOverScreen = document.getElementById('game-over-screen');
 const restartButton = document.getElementById('restart-button');
+const toggleMouseButton = document.getElementById('toggle-mouse-button');
 
 
 var World = Matter.World;
@@ -16,6 +17,7 @@ let dropping = false;
 let allowInput = true;
 let playerPoints = 0;
 let isGameOver = false;
+let mouseMoveAllowed = true;
 
 const fishClasses = [
     fish.FishEgg,
@@ -61,7 +63,9 @@ function initializePointsText() {
 
 const pointsText = initializePointsText();
 
-export function zoomIn(body, targetScale) {
+let allowDrop = true; // variable to fix the fish being able to droppped too fast
+
+export function zoomIn(body) {
     const zoomFactor = 1.1;
     let currentScale = body.render.sprite.xScale;
     const zoomInterval = setInterval(() => {
@@ -146,7 +150,7 @@ export function moveFish(direction) {
 
 
 export function handleMouseMove(event) {
-    if (settingsScreen.style.display === "none" && followFish && !dropping && !isGameOver) {
+    if (settingsScreen.style.display === "none" && followFish && !dropping && !isGameOver && mouseMoveAllowed) {
         const mouseX = event.clientX;
         const fishX = followFish.getBody().position.x;
         const newX = Math.min(WIDTH - followFish.getRadius(), Math.max(followFish.getRadius(), mouseX));
@@ -177,7 +181,7 @@ export function handleKeyPress(event) {
             moveFish("right");
         }
         // Down arrow key
-        else if (keyCode === 40 || keyCode == 32) {
+        else if ((keyCode === 40 || keyCode == 32) && allowDrop) {
             dropFish();
         }
     }
@@ -193,31 +197,23 @@ export function handleKeyPress(event) {
 
 
 export function dropFish(event) {
-    if (followFish && allowInput && !isGameOver) {
-        //console.log("dropFish");
+    if (followFish && allowInput && !isGameOver && allowDrop) {
         dropping = true;
+        allowInput = false;
+        allowDrop = false; // Disable dropping
+      
         Matter.Body.setStatic(followFish.getBody(), false);
 
-        // Disable user input during the delay
-        allowInput = false;
-
-        const delay = 600;
-
-        // Use a Promise to ensure proper sequencing
-        const promise = new Promise((resolve) => {
-            setTimeout(() => {
-                resolve();
-            }, delay);
-        });
-
-        promise.then(() => {
-            followFish = addFishToDrop(event);
-        });
-
         // Re-enable user input after the delay
+        // Delay for dropping logic
         setTimeout(() => {
+            followFish = addFishToDrop(event);
+            dropping = false;
             allowInput = true;
-        }, delay);
+            setTimeout(() => {
+                allowDrop = true; // Re-enable dropping after delay
+            }, 400); // Adjust this delay as needed
+        }, 400); // This delay should match the dropping animation time
     }
 }
 
@@ -267,3 +263,13 @@ export function restartButtonClickHandler(event) {
 }
 
 restartButton.addEventListener("click", restartButtonClickHandler);
+toggleMouseButton.addEventListener("click", toggleMouseButtonClickHandler);
+
+function toggleMouseButtonClickHandler(event) {
+    mouseMoveAllowed = !mouseMoveAllowed;
+    if (mouseMoveAllowed) {
+        toggleMouseButton.textContent = "Disable Mouse";
+    } else {
+        toggleMouseButton.textContent = "Enable Mouse";
+    }
+}
