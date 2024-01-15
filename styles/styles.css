@@ -73,21 +73,6 @@ body {
     margin-bottom: 15px;
 }
 
-#settings-screen {
-    display: none;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    background-image: url("../assets/other/gameover_wood.png");
-    background-size: cover;
-    padding: 20px;
-    border-radius: 10px;
-    color: white;
-    z-index: 1;
-}
-
 #restart-button {
     background-color: #4CAF50;
     color: white;
@@ -100,20 +85,8 @@ body {
     align-items: 'center';
 }
 
-#settings-restart-button {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-    font-size: 18px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    outline: none;
-    align-items: 'center';
-}
-
 #restart-button:hover {
-    background-color: #5fb363;
+    background-color: #8dc490;
 }
 
 .gg-redo {
@@ -125,5 +98,47 @@ body {
     height: 14px;
     border: 2px solid;
     border-right-color: transparent;
-    border-radius: 100px
+    border-radius: 100px;
+}
+
+#settings-screen {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    background-image: url("../assets/other/gameover_wood.png");
+    background-size: cover;
+    border-radius: 10px;
+    color: white;
+    z-index: 1;
+    padding: 20px;
+}
+
+#settings-message {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+#settings-buttons-container {
+    display: flex;
+    justify-content: center;
+}
+
+#settings-restart-button,
+#toggle-mouse-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 5px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    margin: 0 5px; /* Adjust the margin between buttons as needed */
+}
+
+#settings-restart-button:hover,
+#toggle-mouse-button:hover {
+    background-color: #8dc490;
 }
