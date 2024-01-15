@@ -61,6 +61,8 @@ function initializePointsText() {
 
 const pointsText = initializePointsText();
 
+let allowDrop = true; // variable to fix the fish being able to droppped too fast
+
 export function zoomIn(body) {
     const zoomFactor = 1.1;
     let currentScale = body.render.sprite.xScale;
@@ -176,7 +178,7 @@ export function handleKeyPress(event) {
             moveFish("right");
         }
         // Down arrow key
-        else if (keyCode === 40 || keyCode == 32) {
+        else if ((keyCode === 40 || keyCode == 32) && allowDrop) {
             dropFish();
         }
     }
@@ -192,31 +194,23 @@ export function handleKeyPress(event) {
 
 
 export function dropFish(event) {
-    if (followFish && allowInput && !isGameOver) {
-        //console.log("dropFish");
+    if (followFish && allowInput && !isGameOver && allowDrop) {
         dropping = true;
+        allowInput = false;
+        allowDrop = false; // Disable dropping
+
         Matter.Body.setStatic(followFish.getBody(), false);
 
-        // Disable user input during the delay
-        allowInput = false;
-
-        const delay = 500;
-
-        // Use a Promise to ensure proper sequencing
-        const promise = new Promise((resolve) => {
-            setTimeout(() => {
-                resolve();
-            }, delay);
-        });
-
-        promise.then(() => {
-            followFish = addFishToDrop(event);
-        });
-
         // Re-enable user input after the delay
+        // Delay for dropping logic
         setTimeout(() => {
+            followFish = addFishToDrop(event);
+            dropping = false;
             allowInput = true;
-        }, delay);
+            setTimeout(() => {
+                allowDrop = true; // Re-enable dropping after delay
+            }, 400); // Adjust this delay as needed
+        }, 400); // This delay should match the dropping animation time
     }
 }
 
