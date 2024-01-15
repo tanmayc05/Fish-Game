@@ -16,6 +16,12 @@ export class Fish {
         this.#radius = radius;
         this.#body = body;
         this.#next = next;
+        this.#body.restitution = 0.1;
+        this.#body.friction = 0.0000001;
+        this.#body.slop = 0;
+        this.#body.render.sprite.xScale = 0.1;
+        this.#body.render.sprite.yScale = 0.1;
+        this.#body.density = 1;
     }
     getName() {
         return this.#name;
@@ -37,20 +43,9 @@ export class Fish {
 export class FishEgg extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Fish Egg";
-        const imagePath = "assets/fishInspiration/fishEgg/fishEgg1.png";
-        const radius = 5;
-        const body = Matter.Bodies.circle(position.x , position.y, radius, {
-            restitution: 0.1, // bounciness
-            friction: 0.00001, // friction against other objects
-            render: {
-                sprite: {
-                    //texture: imagePath,
-                    xScale: 0.1,
-                    yScale: 0.1,
-
-                },
-            },
-        });
+        const imagePath = "assets/fishPicsUsed/fishEgg.png";
+        const radius = 8;
+        const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new Minnow;
         super(name, imagePath, radius, body, next);
     }
@@ -59,20 +54,9 @@ export class FishEgg extends Fish {
 export class Minnow extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Minnow";
-        const imagePath = "assets/fishInspiration/minnow/minnow1.png";
+        const imagePath = "assets/fishPicsUsed/minnow.png";
         const radius = 10;
-        const body = Matter.Bodies.circle(position.x , position.y, radius, {
-            restitution: 0.1, // bounciness
-            friction: 0.00001, // friction against other objects
-            render: {
-                sprite: {
-                    //texture: imagePath,
-                    xScale: 0.1,
-                    yScale: 0.1,
-
-                },
-            },
-        });
+        const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new Clownfish;
         super(name, imagePath, radius, body, next);
     }
@@ -83,18 +67,7 @@ export class Clownfish extends Fish {
         const name = "Clownfish";
         const imagePath = "assets/fishInspiration/clownFish/clownfish1.png";
         const radius = 17;
-        const body = Matter.Bodies.circle(position.x , position.y, radius, {
-            restitution: 0.1, // bounciness
-            friction: 0.00001, // friction against other objects
-            render: {
-                sprite: {
-                    //texture: imagePath,
-                    xScale: 0.1,
-                    yScale: 0.1,
-
-                },
-            },
-        });
+        const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new MoorishIdol;
         super(name, imagePath, radius, body, next);
     }
@@ -105,18 +78,7 @@ export class MoorishIdol extends Fish {
         const name = "Moorish Idol";
         const imagePath = "assets/fishInspiration/moorishIdol/mi3.png";
         const radius = 22;
-        const body = Matter.Bodies.circle(position.x , position.y, radius, {
-            restitution: 0.1, // bounciness
-            friction: 0.00001, // friction against other objects
-            render: {
-                sprite: {
-                    //texture: imagePath,
-                    xScale: 0.1,
-                    yScale: 0.1,
-
-                },
-            },
-        });
+        const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new Otter;
         super(name, imagePath, radius, body, next);
     }
@@ -127,18 +89,7 @@ export class Otter extends Fish {
         const name = "Otter";
         const imagePath = "assets/fishInspiration/seaOtter/otter1.png";
         const radius = 30;
-        const body = Matter.Bodies.circle(position.x , position.y, radius, {
-            restitution: 0.1, // bounciness
-            friction: 0.00001, // friction against other objects
-            render: {
-                sprite: {
-                    //texture: imagePath,
-                    xScale: 0.1,
-                    yScale: 0.1,
-
-                },
-            },
-        });
+        const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new Turtle;
         super(name, imagePath, radius, body, next);
     }
@@ -149,18 +100,7 @@ export class Turtle extends Fish {
         const name = "Turtles";
         const imagePath = "assets/fishInspiration/turtle/turtle1.png";
         const radius = 38;
-        const body = Matter.Bodies.circle(position.x , position.y, radius, {
-            restitution: 0.1, // bounciness
-            friction: 0.00001, // friction against other objects
-            render: {
-                sprite: {
-                    //texture: imagePath,
-                    xScale: 0.1,
-                    yScale: 0.1,
-
-                },
-            },
-        });
+        const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new Manatee;
         super(name, imagePath, radius, body, next);
     }
@@ -171,18 +111,7 @@ export class Manatee extends Fish {
         const name = "Manatee";
         const imagePath = "assets/fishInspiration/manatee/manatee2.png";
         const radius = 46;
-        const body = Matter.Bodies.circle(position.x , position.y, radius, {
-            restitution: 0.1, // bounciness
-            friction: 0.00001, // friction against other objects
-            render: {
-                sprite: {
-                    //texture: imagePath,
-                    xScale: 0.1,
-                    yScale: 0.1,
-
-                },
-            },
-        });
+        const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new Dolphin;
         super(name, imagePath, radius, body, next);
     }
@@ -193,18 +122,7 @@ export class Dolphin extends Fish {
         const name = "Dolphin";
         const imagePath = "assets/fishInspiration/dolphin/dolphin4.png";
         const radius = 54;
-        const body = Matter.Bodies.circle(position.x , position.y, radius, {
-            restitution: 0.1, // bounciness
-            friction: 0.00001, // friction against other objects
-            render: {
-                sprite: {
-                    //texture: imagePath,
-                    xScale: 0.1,
-                    yScale: 0.1,
-
-                },
-            },
-        });
+        const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new Shark;
         super(name, imagePath, radius, body, next);
     }
@@ -215,18 +133,7 @@ export class Shark extends Fish {
         const name = "Shark";
         const imagePath = "assets/fishInspiration/shark/shark1.png";
         const radius = 62;
-        const body = Matter.Bodies.circle(position.x , position.y, radius, {
-            restitution: 0.1, // bounciness
-            friction: 0.00001, // friction against other objects
-            render: {
-                sprite: {
-                    //texture: imagePath,
-                    xScale: 0.1,
-                    yScale: 0.1,
-
-                },
-            },
-        });
+        const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new Orca;
         super(name, imagePath, radius, body, next);
     }
@@ -237,18 +144,7 @@ export class Orca extends Fish {
         const name = "Orca";
         const imagePath = "assets/fishInspiration/orca/orca1.png";
         const radius = 70;
-        const body = Matter.Bodies.circle(position.x , position.y, radius, {
-            restitution: 0.1, // bounciness
-            friction: 0.00001, // friction against other objects
-            render: {
-                sprite: {
-                    //texture: imagePath,
-                    xScale: 0.1,
-                    yScale: 0.1,
-
-                },
-            },
-        });
+        const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new Whale;
         super(name, imagePath, radius, body, next);
     }
@@ -259,17 +155,7 @@ export class Whale extends Fish {
         const name = "Whale";
         const imagePath = "assets/fishInspiration/blueWhale/whale2.png";
         const radius = 80;
-        const body = Matter.Bodies.circle(position.x , position.y, radius, {
-            restitution: 0.1, // bounciness
-            render: {
-                sprite: {
-                    //texture: imagePath,
-                    xScale: 0.1,
-                    yScale: 0.1,
-
-                },
-            },
-        });
+        const body = Matter.Bodies.circle(position.x , position.y, radius);
         super(name, imagePath, radius, body, null);
     }
 }
