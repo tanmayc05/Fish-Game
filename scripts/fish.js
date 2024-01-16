@@ -10,12 +10,15 @@ export class Fish {
     #radius;
     #body;
     #next;
+    #isActive;
     constructor(name, imagePath, radius, body, next) {
         this.#name = name;
         this.#imagePath = imagePath;
         this.#radius = radius;
         this.#body = body;
+        this.#body.isSensor = true;
         this.#next = next;
+        this.#isActive = false;
     }
     getName() {
         return this.#name;
@@ -32,6 +35,24 @@ export class Fish {
     getNext() {
         return this.#next;
     }
+
+    getActive() {
+        return this.#isActive;
+    }
+
+    getSensor() {
+        return this.#body.isSensor;
+    }
+
+    setActive(isActive) {
+        this.#isActive = isActive;
+    }
+
+    setSensor(isSensor) {
+        if (this.#body && 'isSensor' in this.#body) {
+            this.#body.isSensor = isSensor;
+        }
+    } 
 }
 
 export class FishEgg extends Fish {

@@ -20,15 +20,25 @@ document.addEventListener('DOMContentLoaded', function () {
         const pairs = event.pairs;
 
         for (let i = 0; i < pairs.length; i++) {
+            
+            
+
             const pair = pairs[i];
             const bodyA = pair.bodyA;
             const bodyB = pair.bodyB;
 
+            /*if (bodyA.owner instanceof Fish && bodyB.owner instanceof Fish) {
+                console.log(`Collision between ${bodyA.owner.getName()} and ${bodyB.owner.getName()}`);
+                console.log(`Active States: ${bodyA.owner.getName()} - ${bodyA.owner.getSensor()}, ${bodyB.owner.getName()} - ${bodyB.owner.getSensor()}`);
+            }*/
+            
             // Check if bodies are instances of Fish (so it doesn't detect collision with walls or ground)
             // also check if the fish is NOT a whale
             if (
                 bodyA.owner instanceof Fish &&
                 bodyB.owner instanceof Fish &&
+                bodyA.owner.getActive() && // Check if fishA is active
+                bodyB.owner.getActive() && //check if fishB is active
                 bodyA.owner.getName() !== "Whale" &&
                 bodyB.owner.getName() !== "Whale"
             ) {

@@ -72,7 +72,6 @@ export function zoomIn(body) {
         }
     }, 2);
 }
-
 export function addFishToDrop(event, position) {
     const randomFishClass = fishClasses[Math.floor(Math.random() * fishClasses.length)];
     const newFish = new randomFishClass(position);
@@ -88,6 +87,7 @@ export function addFishToDrop(event, position) {
     Matter.Body.setStatic(newFish.getBody(), true);
     const fishBody = newFish.getBody();
     fishBody.owner = newFish;
+    //newFish.setActive(true);
     followFish = newFish;
     dropping = false;
     isGameOver = false;
@@ -95,8 +95,12 @@ export function addFishToDrop(event, position) {
 }
 
 
+
+
 export function addMergedFish(position, fishClass) {
     const newFish = new fishClass(position);
+    newFish.setActive(true);
+    newFish.setSensor(false);
     Matter.Body.scale(newFish.getBody(), 0.1, 0.1);
     World.add(engine.world, newFish.getBody());
 
@@ -189,8 +193,11 @@ export function dropFish(event) {
     if (followFish && allowInput && !isGameOver) {
         //console.log("dropFish");
         dropping = true;
+        followFish.setActive(true);
+        followFish.setSensor(false);
         Matter.Body.setStatic(followFish.getBody(), false);
-
+        
+        
         // Disable user input during the delay
         allowInput = false;
 
@@ -213,6 +220,8 @@ export function dropFish(event) {
         }, delay);
     }
 }
+
+
 
 export function gameOver() {
     isGameOver = true;
