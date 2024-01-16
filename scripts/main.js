@@ -107,7 +107,11 @@ const wallOptions = {
         strokeStyle: "#0077BE",
         fillStyle: "#0077BE",
         lineWidth: 10,
-        }
+    },
+    friction: 0,
+    restitution: 0.1,
+    slop: 0
+      
 };
 const wallThickness = 10;
 
@@ -133,6 +137,7 @@ Matter.World.add(engine.world, [
     rightWall, // right
     background
 ]);
+
 
 controls.addFishToDrop();
 
