@@ -21,7 +21,6 @@ export class Fish {
         this.#body.slop = 0;
         this.#body.render.sprite.xScale = 0.1;
         this.#body.render.sprite.yScale = 0.1;
-        this.#body.density = 1;
     }
     getName() {
         return this.#name;

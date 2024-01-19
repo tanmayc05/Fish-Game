@@ -66,10 +66,10 @@ const pointsText = initializePointsText();
 let allowDrop = true; // variable to fix the fish being able to droppped too fast
 
 export function zoomIn(body) {
-    const zoomFactor = 1.1;
+    const zoomFactor = 1.2;
     let currentScale = body.render.sprite.xScale;
     const zoomInterval = setInterval(() => {
-        if (currentScale < targetScale) {
+        if (currentScale < 1) {
             currentScale *= zoomFactor;
             Matter.Body.scale(body, zoomFactor, zoomFactor);
         } else {
