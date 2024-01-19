@@ -16,11 +16,12 @@ export class Fish {
         this.#radius = radius;
         this.#body = body;
         this.#next = next;
-        this.#body.restitution = 0.1;
+        this.#body.restitution = 0;
         this.#body.friction = 0.0000001;
         this.#body.slop = 0;
-        this.#body.render.sprite.xScale = 0.1;
-        this.#body.render.sprite.yScale = 0.1;
+        this.#body.render.sprite.xScale = .33;
+        this.#body.render.sprite.yScale = .33;
+        this.#body.render.sprite.texture = imagePath;
     }
     getName() {
         return this.#name;
@@ -43,7 +44,7 @@ export class FishEgg extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Fish Egg";
         const imagePath = "assets/fishPicsUsed/fishEgg.png";
-        const radius = 8;
+        const radius = 30;
         const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new Minnow;
         super(name, imagePath, radius, body, next);
@@ -54,7 +55,7 @@ export class Minnow extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Minnow";
         const imagePath = "assets/fishPicsUsed/minnow.png";
-        const radius = 10;
+        const radius = 50;
         const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new Clownfish;
         super(name, imagePath, radius, body, next);
@@ -64,8 +65,8 @@ export class Minnow extends Fish {
 export class Clownfish extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Clownfish";
-        const imagePath = "assets/fishInspiration/clownFish/clownfish1.png";
-        const radius = 17;
+        const imagePath = "assets/fishPicsUsed/clownfish.png";
+        const radius = 60;
         const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new MoorishIdol;
         super(name, imagePath, radius, body, next);
@@ -75,8 +76,8 @@ export class Clownfish extends Fish {
 export class MoorishIdol extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Moorish Idol";
-        const imagePath = "assets/fishInspiration/moorishIdol/mi3.png";
-        const radius = 22;
+        const imagePath = "assets/fishPicsUsed/moorishIdol.png";
+        const radius = 70;
         const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new Otter;
         super(name, imagePath, radius, body, next);
@@ -86,8 +87,8 @@ export class MoorishIdol extends Fish {
 export class Otter extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Otter";
-        const imagePath = "assets/fishInspiration/seaOtter/otter1.png";
-        const radius = 30;
+        const imagePath = "assets/fishPicsUsed/otter.png";
+        const radius = 90;
         const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new Turtle;
         super(name, imagePath, radius, body, next);
@@ -97,8 +98,8 @@ export class Otter extends Fish {
 export class Turtle extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Turtles";
-        const imagePath = "assets/fishInspiration/turtle/turtle1.png";
-        const radius = 38;
+        const imagePath = "assets/fishPicsUsed/turtle.png";
+        const radius = 105;
         const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new Manatee;
         super(name, imagePath, radius, body, next);
@@ -108,8 +109,8 @@ export class Turtle extends Fish {
 export class Manatee extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Manatee";
-        const imagePath = "assets/fishInspiration/manatee/manatee2.png";
-        const radius = 46;
+        const imagePath = "assets/fishPicsUsed/manatee.png";
+        const radius = 120;
         const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new Dolphin;
         super(name, imagePath, radius, body, next);
@@ -119,8 +120,8 @@ export class Manatee extends Fish {
 export class Dolphin extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Dolphin";
-        const imagePath = "assets/fishInspiration/dolphin/dolphin4.png";
-        const radius = 54;
+        const imagePath = "assets/fishPicsUsed/dolphin.png";
+        const radius = 140;
         const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new Shark;
         super(name, imagePath, radius, body, next);

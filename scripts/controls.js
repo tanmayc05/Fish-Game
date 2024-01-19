@@ -70,8 +70,8 @@ export function zoomIn(body) {
     let currentScale = body.render.sprite.xScale;
     const zoomInterval = setInterval(() => {
         if (currentScale < 1) {
-            currentScale *= zoomFactor;
             Matter.Body.scale(body, zoomFactor, zoomFactor);
+            currentScale *= zoomFactor;
         } else {
             clearInterval(zoomInterval);
         }
@@ -85,7 +85,6 @@ export function addFishToDrop(event, position) {
         const mouseX = event.clientX;
         Matter.Body.setPosition(newFish.getBody(), { x: mouseX, y: defaultStartingPositionY});
     }
-    //const newFish = new fish.FishEgg(position)
     Matter.Body.scale(newFish.getBody(), 0.1, 0.1);
     World.add(engine.world, newFish.getBody());
 
@@ -126,13 +125,13 @@ export function moveFish(direction) {
         const currentX = followFish.getBody().position.x;
         const newX = direction === "left" ? currentX - 10 : currentX + 10;
         if (
-            newX - followFish.getRadius() < 0 ||
-            newX + followFish.getRadius() > WIDTH
+            newX - followFish.getRadius()*33 < 0 ||
+            newX + followFish.getRadius()*33 > WIDTH
         ) {
             // Bring the fish back within bounds
             const boundedX = Math.max(
-                followFish.getRadius(),
-                Math.min(newX, WIDTH - followFish.getRadius())
+                followFish.getRadius()*0.33,
+                Math.min(newX, WIDTH - followFish.getRadius()*.33)
             );
             Matter.Body.setPosition(followFish.getBody(), {
                 x: boundedX,
@@ -153,12 +152,12 @@ export function handleMouseMove(event) {
     if (settingsScreen.style.display === "none" && followFish && !dropping && !isGameOver && mouseMoveAllowed) {
         const mouseX = event.clientX;
         const fishX = followFish.getBody().position.x;
-        const newX = Math.min(WIDTH - followFish.getRadius(), Math.max(followFish.getRadius(), mouseX));
+        const newX = Math.min(WIDTH - followFish.getRadius()*0.33, Math.max(followFish.getRadius()*0.33, mouseX));
 
         Matter.Body.setPosition(followFish.getBody(), { x: newX, y: followFish.getBody().position.y });
     
-        if (newX - (followFish.getRadius()) < 0 || newX + (followFish.getRadius()) > WIDTH) {
-            const boundedX = Math.max(followFish.getRadius(), Math.min(newX, WIDTH - followFish.getRadius()));
+        if (newX - (followFish.getRadius()*0.33) < 0 || newX + (followFish.getRadius()*0.33) > WIDTH) {
+            const boundedX = Math.max(followFish.getRadius()*0.33, Math.min(newX, WIDTH - followFish.getRadius()*0.33));
             Matter.Body.setPosition(followFish.getBody(), { x: boundedX, y: followFish.getBody().position.y });
         } else {
             Matter.Body.setPosition(followFish.getBody(), {
