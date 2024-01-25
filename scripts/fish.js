@@ -88,7 +88,7 @@ export class Otter extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Otter";
         const imagePath = "assets/fishPicsUsed/otter.png";
-        const radius = 90;
+        const radius = 80;
         const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new Turtle;
         super(name, imagePath, radius, body, next);
@@ -99,7 +99,7 @@ export class Turtle extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Turtles";
         const imagePath = "assets/fishPicsUsed/turtle.png";
-        const radius = 100;
+        const radius = 90;
         const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new Manatee;
         super(name, imagePath, radius, body, next);
@@ -121,7 +121,7 @@ export class Dolphin extends Fish {
     constructor(position = { x: WIDTH / 2, y: defaultStartingPositionY }) {
         const name = "Dolphin";
         const imagePath = "assets/fishPicsUsed/dolphin.png";
-        const radius = 140;
+        const radius = 120;
         const body = Matter.Bodies.circle(position.x , position.y, radius);
         const next = new Shark;
         super(name, imagePath, radius, body, next);
